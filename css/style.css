@@ -1,0 +1,31 @@
+body {
+	background : #f0f0f0;
+}
+
+canvas {
+	position : absolute;
+	top : 0;
+	left : 0;
+}
+
+#tools {
+	position : fixed;
+	top : 10px;
+	left : 10px;
+	
+	min-width : 200px;
+	height : calc(100% - 40px);
+	
+	padding : 10px;
+
+	background : #dadada;
+	box-shadow : 1px 1px 2px grey;
+	
+	transition-duration : 0.3s;
+	opacity : 0.6;
+}
+
+#tools:hover {
+	transition-duration : 0.1s;
+	opacity : 0.8;
+}
