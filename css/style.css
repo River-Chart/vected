@@ -5,27 +5,39 @@ body {
 canvas {
 	position : absolute;
 	top : 0;
-	left : 0;
+	left : 200px;
 }
 
 #tools {
 	position : fixed;
-	top : 10px;
-	left : 10px;
+	top : 0px;
+	left : 0px;
 	
 	min-width : 200px;
-	height : calc(100% - 40px);
+	height : calc(100% - 20px);
 	
 	padding : 10px;
 
-	background : #dadada;
-	box-shadow : 1px 1px 2px grey;
-	
-	transition-duration : 0.3s;
-	opacity : 0.6;
+	background : #f9f9f9;
 }
 
-#tools:hover {
+#tools > button {
+	transition-duration : 0.5s;
+	background : #f9f9f9;
+	border : none;
+	padding : 10px;
+	cursor : pointer;
+}
+
+#tools > button:hover {
 	transition-duration : 0.1s;
-	opacity : 0.8;
+	background : #ddaa55;
+}
+
+#tools > h1 {
+	margin : 0;
+	font-weight : normal;
+	text-align : center;
+	font-size : 1.5em;
+	color : #444444;
 }

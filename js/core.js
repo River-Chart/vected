@@ -43,7 +43,7 @@ var core = new function() {
 	};
 	
 	this.mousemove = function(e) {
-		core.mouseX = e.pageX;
+		core.mouseX = e.pageX - 200;
 		core.mouseY = e.pageY;
 	
 		if(core.tools[core.tool].mousemove) {
@@ -54,7 +54,7 @@ var core = new function() {
 
 function load() {
 	canvas = document.getElementById("canvas");
-	canvas.width = window.innerWidth;
+	canvas.width = window.innerWidth - 200;
 	canvas.height = window.innerHeight;
 	
 	canvas.onmousedown = core.mousedown;
@@ -66,7 +66,7 @@ function load() {
 	gui.tools = document.getElementById("tools");
 	console.log(gui.tools);
 	
-	gui.tools.innerHtml = "";
+	gui.tools.innerHTML = "<h1>Tools</h1>";
 	for(var i = 0; i < core.tools.length; i++) {
 		gui.tools.innerHTML += "<button onclick=\"core.tool = " + i + "\">" + core.tools[i].title + "</button>";
 	}
