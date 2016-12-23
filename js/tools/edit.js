@@ -7,7 +7,7 @@ core.register_tool(new function() {
 			for(var i = 0; i < core.project.shapes.length; i++) {
 				var my_shape = core.project.shapes[i];
 				 
-				if(utils.dist(core.mouseX, core.mouseY, 
+				if(utils.dist(core.mouseX_raw, core.mouseY_raw, 
 			 			my_shape.position.x, my_shape.position.y) < 10) {
 			 		this.selected_point = -2;
 			 		core.project.select(i);
@@ -16,7 +16,7 @@ core.register_tool(new function() {
 				for(var j = 0; j < my_shape.path.points.length; j++) {
 					var p = my_shape.path.points[j];
 					
-					if(utils.dist(core.mouseX, core.mouseY, 
+					if(utils.dist(core.mouseX_raw, core.mouseY_raw, 
 							p.x + my_shape.position.x, p.y + my_shape.position.y) < 10) {
 						this.selected_point = j;
 						core.project.select(i);
@@ -24,6 +24,8 @@ core.register_tool(new function() {
 				}
 			}
 		}
+		
+		core.update_tools();
 	};
 	
 	this.mousemove = function(e) {
@@ -49,5 +51,7 @@ core.register_tool(new function() {
 		if(e.which == 1) {
 			this.selected_point = -1;
 		}
+		
+		core.update_tools();
 	};
 }());
