@@ -6,12 +6,15 @@ function shape(points) {
 
 	this.path = {
 		points : (points || []),
-		closed : false
+		closed : false,
+		curve : false
 	};
 	
 	this.style = {
 		fill : "#444",
-		stroke : "#444"
+		stroke : "#444",
+		draw_fill : true,
+		draw_stroke : true
 	};
 	
 	this.draw = function() {
@@ -24,13 +27,37 @@ function shape(points) {
 		
 			ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
 		
-			for(var i = 1; i < this.path.points.length; i++) {
-				var p = this.path.points[i];
-				ctx.lineTo(p.x, p.y);
+			if(this.path.curve) {
+				for(var i = 1; i < this.path.points.length; i += 2) {
+					var p = this.path.points[i];
+				
+					var j = i+1;
+					if(j > this.path.points.length-1) {
+						j = 0;
+					}
+					var p2 = this.path.points[j];
+					ctx.quadraticCurveTo(p.x, p.y, p2.x, p2.y);
+				}
+			} else {
+				for(var i = 1; i < this.path.points.length; i++) {
+					var p = this.path.points[i];
+
+					ctx.lineTo(p.x, p.y);
+				}
 			}
 		
-			ctx.stroke();
-			ctx.fill();
+			if(this.path.closed) {
+				ctx.closePath();
+			}
+		
+			if(this.style.draw_stroke) {
+				ctx.stroke();
+			}
+			
+			if(this.style.draw_fill) {
+				ctx.fill();
+			}
+			
 			ctx.translate(-this.position.x, -this.position.y);
 		}
 	};

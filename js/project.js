@@ -6,10 +6,12 @@ function project() {
 		this.shapes.push(obj);
 	};
 	
-	this.draw = function() {
+	this.draw = function(draw_points) {
 		for(var i = 0; i < this.shapes.length; i++) {
 			this.shapes[i].draw();
-			this.shapes[i].draw_points();
+			if(draw_points) {
+				this.shapes[i].draw_points();
+			}
 		}
 	};
 	

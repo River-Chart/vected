@@ -16,10 +16,18 @@ var core = new function() {
 	this.mouseY_raw = 0;
 	
 	this.snap = false;
+	this.preview = false;
+	
+	this.settings = [];
 	
 	this.register_tool = function(t) {
 		this.tools.push(t);
 	};
+	
+	this.register_setting = function(t) {
+		this.settings.push(t);
+	};
+	
 	
 	this.get_selected_shape = function() {
 		if(this.project.selected_shape != -1) {
@@ -38,7 +46,7 @@ var core = new function() {
 	
 	this.draw = function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		this.project.draw();
+		this.project.draw(!core.preview);
 	};
 	
 	this.update_tools = function() {
@@ -47,15 +55,42 @@ var core = new function() {
 			gui.tools.innerHTML += "<button onclick=\"core.select_tool(" + i + ");\">" + core.tools[i].title + "</button>";
 		}
 		
+		gui.tools.innerHTML += "<br><br><h1>Settings</h1>";
+		for(var i = 0; i < this.settings.length; i++) {
+			gui.tools.innerHTML += "<div class=\"box\">" + this.settings[i].title + this.settings[i].get_input(i) + "</div>";
+			
+		}
+		
 		if(this.project.selected_shape != -1) {
 			var s = core.get_selected_shape();
 		
 			var stroke = s.style.stroke;
 			var fill = s.style.fill;
+			
+			var draw_fill = s.style.draw_fill;
+			var draw_stroke = s.style.draw_stroke;
+			
+			var closed = s.path.closed;
+			var curve = s.path.curve;
 		
-			gui.tools.innerHTML += "<br><br><h1>Object</h1>";
-			gui.tools.innerHTML += "<div class=\"box\">stroke <input type=\"color\" id=\"color_stroke\" onchange=\"core.get_selected_shape().style.stroke = this.value; core.update_tools();\" value=\"" + stroke + "\"></input></div>";
-			gui.tools.innerHTML += "<div class=\"box\">fill <input type=\"color\" id=\"color_fill\" onchange=\"core.get_selected_shape().style.fill = this.value; core.update_tools();\" value=\"" + fill + "\"></input></div>";
+			str = "<br><br><div class=\"object\">";
+		
+			str += "<h1>Object</h1>";
+			str += "<div class=\"box\">stroke <input type=\"color\" id=\"color_stroke\" onchange=\"core.get_selected_shape().style.stroke = this.value; core.update_tools();\" value=\"" + stroke + "\"></input></div>";
+			str += "<div class=\"box\">fill <input type=\"color\" id=\"color_fill\" onchange=\"core.get_selected_shape().style.fill = this.value; core.update_tools();\" value=\"" + fill + "\"></input></div>";
+			
+			str += "<br>";
+			str += "<div class=\"box\">stroke <input type=\"checkbox\" id=\"draw_stroke\" onchange=\"core.get_selected_shape().style.draw_stroke = this.checked; core.draw(); core.update_tools();\" " + (draw_stroke ? "checked=\"checked\"" : "") + "></input></div>";
+			str += "<div class=\"box\">fill <input type=\"checkbox\" id=\"draw_fill\" onchange=\"core.get_selected_shape().style.draw_fill = this.checked; core.draw(); core.update_tools();\" " + (draw_fill ? "checked=\"checked\"" : "") + "></input></div>";
+			
+			str += "<br>";
+			str += "<div class=\"box\">closed <input type=\"checkbox\" id=\"path_closed\" onchange=\"core.get_selected_shape().path.closed = this.checked; core.draw(); core.update_tools();\" " + (closed ? "checked=\"checked\"" : "") + "></input></div>";
+			str += "<div class=\"box\">curve <input type=\"checkbox\" id=\"path_curve\" onchange=\"core.get_selected_shape().path.curve = this.checked; core.draw(); core.update_tools();\" " + (curve ? "checked=\"checked\"" : "") + "></input></div>";
+		
+		
+			str += "</div>";
+			
+			gui.tools.innerHTML += str;
 		}
 	};
 	
