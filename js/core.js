@@ -15,7 +15,10 @@ var core = new function() {
 	this.mouseX_raw = 0;
 	this.mouseY_raw = 0;
 	
+	this.mouse_pressed = [false, false, false];
+	
 	this.snap = false;
+	this.grid_size = 50;
 	this.preview = false;
 	
 	this.settings = [];
@@ -96,12 +99,16 @@ var core = new function() {
 	
 	//input
 	this.mousedown = function(e) {
+		core.mouse_pressed[e.which] = true;
+	
 		if(core.tools[core.tool].mousedown) {
 			core.tools[core.tool].mousedown(e);
 		}
 	};
 	
 	this.mouseup = function(e) {
+		core.mouse_pressed[e.which] = false;
+	
 		if(core.tools[core.tool].mouseup) {
 			core.tools[core.tool].mouseup(e);
 		}
@@ -118,8 +125,8 @@ var core = new function() {
 			core.mouseX = raw_x;
 			core.mouseY = raw_y;
 		} else {
-			core.mouseX = Math.floor(raw_x/50+0.5)*50;
-			core.mouseY = Math.floor(raw_y/50+0.5)*50;
+			core.mouseX = Math.floor(raw_x/core.grid_size+0.5)*core.grid_size;
+			core.mouseY = Math.floor(raw_y/core.grid_size+0.5)*core.grid_size;
 		}
 	
 		if(core.tools[core.tool].mousemove) {

@@ -15,6 +15,7 @@ canvas {
 	
 	min-width : 200px;
 	height : calc(100% - 20px);
+	overflow-y : auto;
 	
 	padding : 10px;
 
@@ -63,6 +64,23 @@ canvas {
 }
 
 #tools input[type="color"]:hover {
+	transition-duration : 0.1s;
+	background : #ddaa55;
+}
+
+#tools input[type="number"] {
+	transition-duration : 0.5s;
+	background : #f9f9f9;
+	border : 1px solid grey;
+	padding-left : 0px;
+	padding-right : 0px;
+	width : 70px;	
+	
+	-moz-appearance : textfield;
+	appearance : textfield;
+}
+
+#tools input[type="number"]:hover {
 	transition-duration : 0.1s;
 	background : #ddaa55;
 }
