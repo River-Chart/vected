@@ -75,6 +75,10 @@ var core = new function() {
 			
 			var closed = s.path.closed;
 			var curve = s.path.curve;
+			var arc = s.path.arc;
+			
+			var stroke_width = s.style.stroke_width;
+			var stroke_cap = s.style.stroke_cap;
 		
 			str = "<br><br><div class=\"object\">";
 		
@@ -89,7 +93,13 @@ var core = new function() {
 			str += "<br>";
 			str += "<div class=\"box\">closed <input type=\"checkbox\" id=\"path_closed\" onchange=\"core.get_selected_shape().path.closed = this.checked; core.draw(); core.update_tools();\" " + (closed ? "checked=\"checked\"" : "") + "></input></div>";
 			str += "<div class=\"box\">curve <input type=\"checkbox\" id=\"path_curve\" onchange=\"core.get_selected_shape().path.curve = this.checked; core.draw(); core.update_tools();\" " + (curve ? "checked=\"checked\"" : "") + "></input></div>";
+			str += "<div class=\"box\">arc <input type=\"checkbox\" id=\"path_arc\" onchange=\"core.get_selected_shape().path.arc = this.checked; core.draw(); core.update_tools();\" " + (arc ? "checked=\"checked\"" : "") + "></input></div>";
 		
+			str += "<br>";
+			str += "<div class=\"box\">stroke width <input type=\"number\" id=\"stroke_width\" onchange=\"core.get_selected_shape().style.stroke_width = parseInt(this.value); core.draw(); core.update_tools();\" value=\"" + stroke_width + "\"></input></div>";
+			
+			var options = "<option " + ("butt" == stroke_cap ? "selected=\"selected\"" : "") + ">butt</option><option " + ("round" == stroke_cap ? "selected=\"selected\"" : "") + ">round</option>";
+			str += "<div class=\"box\">stroke cap <select id=\"stroke_cap\" onchange=\"core.get_selected_shape().style.stroke_cap = this.options[this.selectedIndex].text; core.draw(); core.update_tools();\">" + options + "</select></div>";
 		
 			str += "</div>";
 			
