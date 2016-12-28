@@ -38,9 +38,15 @@ function shape(points) {
 					var p = this.path.points[i];
 				
 					var j = i+1;
+				
 					if(j > this.path.points.length-1) {
-						j = 0;
+						if(this.path.closed) {
+							j = 0;
+						} else {
+							j = this.path.points.length-1;
+						}
 					}
+					
 					var p2 = this.path.points[j];
 					ctx.quadraticCurveTo(p.x, p.y, p2.x, p2.y);
 				}
