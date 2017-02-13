@@ -6,17 +6,17 @@ core.register_tool(new function() {
 		if(e.which == 1) {
 			for(var i = 0; i < core.project.shapes.length; i++) {
 				var my_shape = core.project.shapes[i];
-				 
-				if(utils.dist(core.mouseX_raw, core.mouseY_raw, 
+
+				if(utils.dist(core.mouseX_raw, core.mouseY_raw,
 			 			my_shape.position.x, my_shape.position.y) < 10) {
 			 		this.selected_point = -2;
 			 		core.project.select(i);
 			 	}
-				 
+
 				for(var j = 0; j < my_shape.path.points.length; j++) {
 					var p = my_shape.path.points[j];
-					
-					if(utils.dist(core.mouseX_raw, core.mouseY_raw, 
+
+					if(utils.dist(core.mouseX_raw, core.mouseY_raw,
 							p.x + my_shape.position.x, p.y + my_shape.position.y) < 10) {
 						this.selected_point = j;
 						core.project.select(i);
@@ -24,10 +24,10 @@ core.register_tool(new function() {
 				}
 			}
 		}
-		
+
 		core.update_tools();
 	};
-	
+
 	this.mousemove = function(e) {
 		if(this.selected_point != -1) {
 			var s = core.get_selected_shape();
@@ -43,15 +43,15 @@ core.register_tool(new function() {
 				};
 			}
 		}
-		
+
 		core.draw();
 	};
-	
+
 	this.mouseup = function(e) {
 		if(e.which == 1) {
 			this.selected_point = -1;
 		}
-		
+
 		core.update_tools();
 	};
 }());

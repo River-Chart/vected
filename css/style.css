@@ -12,13 +12,13 @@ canvas {
 	position : fixed;
 	top : 0px;
 	left : 0px;
-	
-	min-width : 200px;
+
+	width : 230px;
 	height : calc(100% - 20px);
 	padding : 10px;
 
 	background : #f9f9f9;
-	
+
 	overflow-y : auto;
 	cursor : default;
 }
@@ -61,7 +61,7 @@ canvas {
 	height : 30px;
 	padding-left : 0px;
 	padding-right : 0px;
-	cursor : pointer;	
+	cursor : pointer;
 }
 
 #tools input[type="color"]:hover {
@@ -75,8 +75,8 @@ canvas {
 	border : 1px solid grey;
 	padding-left : 0px;
 	padding-right : 0px;
-	width : 70px;	
-	
+	width : 70px;
+
 	-webkit-appearance : textfield;
 	-moz-appearance : textfield;
 	appearance : textfield;
@@ -99,7 +99,7 @@ canvas {
 	padding-right : 0px;
 	width : 70px;
 	float : right;
-	
+
 	-webkit-appearance : none;
 	-moz-appearance : none;
 	appearance : none;
@@ -123,4 +123,3 @@ canvas {
 
 #tools > .object {
 }
-

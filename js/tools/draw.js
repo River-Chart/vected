@@ -1,7 +1,7 @@
 core.register_tool(new function() {
 	this.title = "draw";
 	this.selected_point = -1;
-	
+
 	this.mousedown = function(e) {
 		var s = core.get_selected_shape();
 		if(s && !e.shiftKey) {
@@ -17,9 +17,9 @@ core.register_tool(new function() {
 					core.project.shapes.splice(core.project.selected_shape, 1);
 				}
 			}
-			
+
 			this.selected_point = s.path.points.length-1;
-			
+
 			core.draw();
 			core.update_tools();
 		} else {
@@ -30,14 +30,14 @@ core.register_tool(new function() {
 			};
 			core.project.push(my_shape);
 			core.project.select(core.project.shapes.length - 1);
-			
+
 			this.selected_point = -2;
-			
+
 			core.draw();
 			core.update_tools();
 		}
 	};
-	
+
 	this.mousemove = function() {
 		if(this.selected_point != -1) {
 			var s = core.get_selected_shape();
@@ -53,10 +53,10 @@ core.register_tool(new function() {
 				};
 			}
 		}
-		
+
 		core.draw();
 	};
-	
+
 	this.mouseup = function() {
 		this.selected_point = -1;
 	};
