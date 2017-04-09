@@ -12,6 +12,9 @@ var core = new function() {
 	this.mouseX = 0;
 	this.mouseY = 0;
 
+	this.pmouseX_raw = 0;
+	this.pmouseY_raw = 0;
+
 	this.mouseX_raw = 0;
 	this.mouseY_raw = 0;
 
@@ -23,6 +26,12 @@ var core = new function() {
 
 	this.settings = [];
 	this.shortcuts = [];
+
+	this.viewport = {
+		x : 0,
+		y : 0,
+		zoom : 1
+	}
 
 	this.register_tool = function(t) {
 		this.tools.push(t);
@@ -62,7 +71,9 @@ var core = new function() {
 
 	this.draw = function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.translate(this.viewport.x, this.viewport.y);
 		this.project.draw(!core.preview);
+		ctx.translate(-this.viewport.x, -this.viewport.y);
 	};
 
 	this.update_tools = function() {
@@ -141,20 +152,34 @@ var core = new function() {
 		var raw_x = e.pageX - 200;
 		var raw_y = e.pageY;
 
-		core.mouseX_raw = raw_x;
-		core.mouseY_raw = raw_y;
+
+		if (core.mouse_pressed[2] && !e.shiftKey) {
+			var dx = raw_x - this.pmouseX_raw;
+			var dy = raw_y - this.pmouseY_raw;
+
+			core.viewport.x += dx;
+			core.viewport.y += dy;
+
+			core.draw();
+		}
+
+		core.mouseX_raw = raw_x - core.viewport.x;
+		core.mouseY_raw = raw_y - core.viewport.y;
 
 		if(!core.snap) {
-			core.mouseX = raw_x;
-			core.mouseY = raw_y;
+			core.mouseX = core.mouseX_raw;
+			core.mouseY = core.mouseY_raw;
 		} else {
-			core.mouseX = Math.floor(raw_x/core.grid_size+0.5)*core.grid_size;
-			core.mouseY = Math.floor(raw_y/core.grid_size+0.5)*core.grid_size;
+			core.mouseX = Math.floor(core.mouseX_raw/core.grid_size+0.5)*core.grid_size;
+			core.mouseY = Math.floor(core.mouseY_raw/core.grid_size+0.5)*core.grid_size;
 		}
 
 		if(core.tools[core.tool].mousemove) {
 			core.tools[core.tool].mousemove(e);
 		}
+
+		this.pmouseX_raw = raw_x;
+		this.pmouseY_raw = raw_y;
 	};
 
 	this.keydown = function(e) {

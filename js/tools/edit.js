@@ -8,10 +8,10 @@ core.register_tool(new function() {
 				var my_shape = core.project.shapes[i];
 
 				if(utils.dist(core.mouseX_raw, core.mouseY_raw,
-			 			my_shape.position.x, my_shape.position.y) < 10) {
-			 		this.selected_point = -2;
-			 		core.project.select(i);
-			 	}
+						my_shape.position.x, my_shape.position.y) < 10) {
+					this.selected_point = -2;
+					core.project.select(i);
+				}
 
 				for(var j = 0; j < my_shape.path.points.length; j++) {
 					var p = my_shape.path.points[j];

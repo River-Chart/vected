@@ -10,12 +10,6 @@ core.register_tool(new function() {
 					x : core.mouseX - s.position.x,
 					y : core.mouseY - s.position.y
 				});
-			} else {
-				if(s.path.points.length > 0) {
-					s.path.points.pop();
-				} else {
-					core.project.shapes.splice(core.project.selected_shape, 1);
-				}
 			}
 
 			this.selected_point = s.path.points.length-1;
@@ -23,38 +17,53 @@ core.register_tool(new function() {
 			core.draw();
 			core.update_tools();
 		} else {
-			var my_shape = new shape([]);
-			my_shape.position = {
-				x : core.mouseX,
-				y : core.mouseY
-			};
-			core.project.push(my_shape);
-			core.project.select(core.project.shapes.length - 1);
+			if(e.which == 1) {
+				var my_shape = new shape([]);
+				my_shape.position = {
+					x : core.mouseX,
+					y : core.mouseY
+				};
+				core.project.push(my_shape);
+				core.project.select(core.project.shapes.length - 1);
 
-			this.selected_point = -2;
+				this.selected_point = -2;
 
-			core.draw();
-			core.update_tools();
+				core.draw();
+				core.update_tools();
+			} else if(s) {
+				if(s.path.points.length > 0) {
+					s.path.points.pop();
+				} else {
+					core.project.shapes.splice(core.project.selected_shape, 1);
+				}
+
+				this.selected_point = s.path.points.length-1;
+
+				core.draw();
+				core.update_tools();
+			}
 		}
 	};
 
 	this.mousemove = function() {
-		if(this.selected_point != -1) {
-			var s = core.get_selected_shape();
-			if(this.selected_point == -2) {
-				s.position = {
-					x : core.mouseX,
-					y : core.mouseY
-				};
-			} else {
-				s.path.points[this.selected_point] = {
-					x : core.mouseX - s.position.x,
-					y : core.mouseY - s.position.y
-				};
+		if(core.mouse_pressed[1]) {
+			if(this.selected_point != -1) {
+				var s = core.get_selected_shape();
+				if(this.selected_point == -2) {
+					s.position = {
+						x : core.mouseX,
+						y : core.mouseY
+					};
+				} else {
+					s.path.points[this.selected_point] = {
+						x : core.mouseX - s.position.x,
+						y : core.mouseY - s.position.y
+					};
+				}
 			}
-		}
 
-		core.draw();
+			core.draw();
+		}
 	};
 
 	this.mouseup = function() {

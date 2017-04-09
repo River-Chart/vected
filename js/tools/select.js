@@ -7,8 +7,8 @@ core.register_tool(new function() {
 
 	this.mousedown = function(e) {
 		if(e.which == 1) {
-			this.start_x = core.mouseX_raw;
-			this.start_y = core.mouseY_raw;
+			this.start_x = core.mouseX;
+			this.start_y = core.mouseY;
 			this.selected_shapes = [];
 			core.draw();
 		}
@@ -18,8 +18,8 @@ core.register_tool(new function() {
 		if(core.mouse_pressed[1]) {
 			core.draw();
 			ctx.strokeStyle = "#ddaa55";
-			ctx.strokeRect(this.start_x, this.start_y, core.mouseX_raw-this.start_x, core.mouseY_raw-this.start_y);
-		} else if(core.mouse_pressed[2]) {
+			ctx.strokeRect(this.start_x+core.viewport.x, this.start_y+core.viewport.y, core.mouseX-this.start_x, core.mouseY-this.start_y);
+		} else if(core.mouse_pressed[2] && e.shiftKey) {
 			for(var i = 0; i < this.selected_shapes.length; i++) {
 				var s = core.project.shapes[this.selected_shapes[i]];
 
@@ -35,12 +35,15 @@ core.register_tool(new function() {
 	};
 
 	this.mouseup = function(e) {
+		console.log(this.start_x, this.start_y);
 		if(e.which == 1) {
 			for(var i = 0; i < core.project.shapes.length; i++) {
 				var my_shape = core.project.shapes[i];
+				console.log(my_shape.position.x, my_shape.position.y);
 
 				if(utils.is_inside(my_shape.position.x, my_shape.position.y,
-							this.start_x, this.start_y,core.mouseX_raw, core.mouseY_raw)) {
+							this.start_x, this.start_y,core.mouseX, core.mouseY)) {
+					console.log(i)
 			 		this.selected_shapes.push(i);
 			 		core.project.select(i);
 			 	}
