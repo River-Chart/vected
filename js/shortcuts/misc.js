@@ -40,3 +40,18 @@ core.register_shortcut(new function() {
 		}
 	};
 }());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = false;
+	this.key = 86;
+
+	this.run = function() {
+		core.viewport = {
+			x : 0,
+			y : 0,
+			zoom : 1
+		}
+		core.draw();
+	};
+}());

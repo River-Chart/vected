@@ -35,15 +35,12 @@ core.register_tool(new function() {
 	};
 
 	this.mouseup = function(e) {
-		console.log(this.start_x, this.start_y);
 		if(e.which == 1) {
 			for(var i = 0; i < core.project.shapes.length; i++) {
 				var my_shape = core.project.shapes[i];
-				console.log(my_shape.position.x, my_shape.position.y);
 
 				if(utils.is_inside(my_shape.position.x, my_shape.position.y,
 							this.start_x, this.start_y,core.mouseX, core.mouseY)) {
-					console.log(i)
 			 		this.selected_shapes.push(i);
 			 		core.project.select(i);
 			 	}
