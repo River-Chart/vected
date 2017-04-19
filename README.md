@@ -1,6 +1,6 @@
-#Vected
-#####By cdqwertz
+# Vected
+##### By cdqwertz
 *Vected* is a simple vector graphics editor written in javascript. *(WIP)*
 
-###License
+### License
 See LICENSE.txt
