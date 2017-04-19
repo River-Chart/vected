@@ -2,6 +2,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 88;
+	this.name = "Delete Point";
 
 	this.run = function() {
 		var s = core.get_selected_shape();
@@ -17,6 +18,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = true;
 	this.key = 88;
+	this.name = "Delete Shape";
 
 	this.run = function() {
 		var s = core.get_selected_shape();

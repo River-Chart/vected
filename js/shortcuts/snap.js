@@ -2,6 +2,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 83;
+	this.name = "Toggle Snap";
 
 	this.run = function() {
 		core.snap = !core.snap;
@@ -14,6 +15,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 81;
+	this.name = "Decrease Grid Size";
 
 	this.run = function() {
 		if((core.grid_size / 2) % 1 == 0) {
@@ -28,6 +30,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 87;
+	this.name = "Increase Grid Size";
 
 	this.run = function() {
 		core.grid_size = core.grid_size * 2;

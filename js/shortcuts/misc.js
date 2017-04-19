@@ -2,6 +2,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 80;
+	this.name = "Toggle preview";
 
 	this.run = function() {
 		core.preview = !core.preview;
@@ -15,6 +16,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = true;
 	this.key = 65;
+	this.name = "Toggle Arc";
 
 	this.run = function() {
 		var s = core.get_selected_shape();
@@ -30,6 +32,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = true;
 	this.key = 67;
+	this.name = "Toggle Curve";
 
 	this.run = function() {
 		var s = core.get_selected_shape();
@@ -45,6 +48,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 86;
+	this.name = "Reset Viewport";
 
 	this.run = function() {
 		core.viewport = {
@@ -52,6 +56,30 @@ core.register_shortcut(new function() {
 			y : 0,
 			zoom : 1
 		}
+		core.draw();
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = false;
+	this.key = 77;
+	this.name = "Move Up";
+
+	this.run = function() {
+		core.project.move_shape(core.project.selected_shape, core.project.selected_shape+1);
+		core.draw();
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = false;
+	this.key = 78;
+	this.name = "Move Down";
+
+	this.run = function() {
+		core.project.move_shape(core.project.selected_shape, core.project.selected_shape-1);
 		core.draw();
 	};
 }());
