@@ -14,4 +14,14 @@ var utils = new function() {
 			return false;
 		}
 	};
+
+	this.save_data_url = function(name, data) {
+		var my_link = document.createElement("a");
+		my_link.download = name;
+		my_link.href = data;
+
+		document.body.appendChild(my_link);
+		my_link.click();
+		document.body.removeChild(my_link);
+	};
 }();

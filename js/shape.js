@@ -51,9 +51,16 @@ function shape(points) {
 					ctx.quadraticCurveTo(p.x, p.y, p2.x, p2.y);
 				}
 			} else if(this.path.arc) {
-				var p1 = this.path.points[0];
-				var r = utils.dist(0, 0, p1.x, p1.y);
-				ctx.arc(0, 0, r, 0, Math.PI*2);
+				if (this.path.points.length > 1) {
+					var p1 = this.path.points[0];
+					var p2 = this.path.points[1];
+
+					ctx.ellipse(0, 0, Math.abs(p1.x), Math.abs(p2.y), 0, 0, 2*Math.PI);
+				} else {
+					var p1 = this.path.points[0];
+					var r = utils.dist(0, 0, p1.x, p1.y);
+					ctx.arc(0, 0, r, 0, Math.PI*2);
+				}
 			} else {
 				for(var i = 1; i < this.path.points.length; i++) {
 					var p = this.path.points[i];

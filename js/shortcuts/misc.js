@@ -83,3 +83,45 @@ core.register_shortcut(new function() {
 		core.draw();
 	};
 }());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = true;
+	this.shiftKey = false;
+	this.key = 83;
+	this.name = "Save File";
+
+	this.run = function() {
+		core.project.save();
+		core.draw();
+
+		return true;
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = true;
+	this.shiftKey = false;
+	this.key = 79;
+	this.name = "Open File";
+
+	this.run = function() {
+		core.project.load	();
+		core.draw();
+
+		return true;
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = true;
+	this.shiftKey = false;
+	this.key = 69;
+	this.name = "Export Image";
+
+	this.run = function() {
+		core.project.export	();
+		core.draw();
+
+		return true;
+	};
+}());
