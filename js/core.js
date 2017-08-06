@@ -107,8 +107,8 @@ var core = new function() {
 			str = "<br><br><div class=\"object\">";
 
 			str += "<h1>Object</h1>";
-			str += "<div class=\"box\">stroke <input type=\"color\" id=\"color_stroke\" onchange=\"core.get_selected_shape().style.stroke = this.value; core.update_tools();\" value=\"" + stroke + "\"></input></div>";
-			str += "<div class=\"box\">fill <input type=\"color\" id=\"color_fill\" onchange=\"core.get_selected_shape().style.fill = this.value; core.update_tools();\" value=\"" + fill + "\"></input></div>";
+			str += "<div class=\"box\">stroke <input type=\"color\" id=\"color_stroke\" onchange=\"core.get_selected_shape().style.stroke = this.value; core.update_tools(); core.draw();\" value=\"" + stroke + "\"></input></div>";
+			str += "<div class=\"box\">fill <input type=\"color\" id=\"color_fill\" onchange=\"core.get_selected_shape().style.fill = this.value; core.update_tools(); core.draw();\" value=\"" + fill + "\"></input></div>";
 
 			str += "<br>";
 			str += "<div class=\"box\">stroke <input type=\"checkbox\" id=\"draw_stroke\" onchange=\"core.get_selected_shape().style.draw_stroke = this.checked; core.draw(); core.update_tools();\" " + (draw_stroke ? "checked=\"checked\"" : "") + "></input></div>";

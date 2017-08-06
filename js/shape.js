@@ -12,8 +12,8 @@ function shape(points) {
 	};
 
 	this.style = {
-		fill : "#444",
-		stroke : "#444",
+		fill : "#444444",
+		stroke : "#444444",
 		draw_fill : true,
 		draw_stroke : true,
 
