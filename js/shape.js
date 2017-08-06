@@ -27,6 +27,15 @@ function shape(points) {
 			ctx.strokeStyle = this.style.stroke;
 			ctx.lineWidth = this.style.stroke_width;
 			ctx.lineCap = this.style.stroke_cap;
+			ctx.lineJoin = "round";
+
+			if (this.style.stroke_cap == "flat") {
+				ctx.lineCap = "butt";
+				ctx.lineJoin = "bevel";
+			} else if (this.style.stroke_cap == "square") {
+				ctx.lineCap = "butt";
+				ctx.lineJoin = "miter";
+			}
 
 			ctx.translate(this.position.x, this.position.y);
 			ctx.beginPath();
@@ -91,7 +100,7 @@ function shape(points) {
 		ctx.fillStyle = "#f0aa55";
 		ctx.strokeStyle = "#444";
 		ctx.lineWidth = 1;
-		ctx.lineCap = "butt"
+		ctx.lineCap = "butt";
 
 		ctx.beginPath();
 		ctx.arc(0, 0, 5, 0, Math.PI*2);

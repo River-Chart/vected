@@ -122,7 +122,7 @@ var core = new function() {
 			str += "<br>";
 			str += "<div class=\"box\">stroke width <input type=\"number\" id=\"stroke_width\" onchange=\"core.get_selected_shape().style.stroke_width = parseInt(this.value); core.draw(); core.update_tools();\" value=\"" + stroke_width + "\"></input></div>";
 
-			var options = "<option " + ("butt" == stroke_cap ? "selected=\"selected\"" : "") + ">butt</option><option " + ("round" == stroke_cap ? "selected=\"selected\"" : "") + ">round</option>";
+			var options = "<option " + ("flat" == stroke_cap ? "selected=\"selected\"" : "") + ">flat</option><option " + ("square" == stroke_cap ? "selected=\"selected\"" : "") + ">square</option><option " + ("round" == stroke_cap ? "selected=\"selected\"" : "") + ">round</option>";
 			str += "<div class=\"box\">stroke cap <select id=\"stroke_cap\" onchange=\"core.get_selected_shape().style.stroke_cap = this.options[this.selectedIndex].text; core.draw(); core.update_tools();\">" + options + "</select></div>";
 
 			str += "</div>";
