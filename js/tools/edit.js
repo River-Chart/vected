@@ -1,5 +1,5 @@
 core.register_tool(new function() {
-	this.title = "edit";
+	this.title = "Edit";
 	this.selected_point = -1;
 
 	this.mousedown = function(e) {

@@ -1,5 +1,5 @@
 core.register_setting(new function() {
-	this.title = "preview";
+	this.title = "Preview";
 
 	this.get_input = function(i) {
 		var str = "<input type=\"checkbox\" onchange=\"core.settings[" + i + "].change(this);\" " + (core.preview ? "checked=\"checked\"" : "") + "></input>"

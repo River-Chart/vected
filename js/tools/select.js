@@ -1,5 +1,5 @@
 core.register_tool(new function() {
-	this.title = "select";
+	this.title = "Select";
 	this.selected_shapes = [];
 
 	this.pmouseX = 0;

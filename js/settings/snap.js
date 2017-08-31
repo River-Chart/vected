@@ -1,5 +1,5 @@
 core.register_setting(new function() {
-	this.title = "snap";
+	this.title = "Snap";
 
 	this.get_input = function(i) {
 		var str = "<input type=\"checkbox\" onchange=\"core.settings[" + i + "].change(this);\" " + (core.snap ? "checked=\"checked\"" : "") + "></input>"
@@ -13,7 +13,7 @@ core.register_setting(new function() {
 }());
 
 core.register_setting(new function() {
-	this.title = "grid size";
+	this.title = "Grid size";
 
 	this.get_input = function(i) {
 		//console.log("hello");

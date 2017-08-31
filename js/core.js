@@ -76,18 +76,6 @@ var core = new function() {
 		ctx.translate(-this.viewport.x, -this.viewport.y);
 	};
 
-	this.createBox = function (text) {
-		var box = document.createElement("div")
-		box.setAttribute("class", "box");
-		box.setAttribute("className", "box");
-
-		if (text) {
-			box.appendChild(document.createTextNode(text));
-		}
-
-		return box;
-	}
-
 	this.update_tools = function() {
 		gui.tools.innerHTML = "";
 
@@ -118,7 +106,7 @@ var core = new function() {
 		gui.tools.appendChild(settings_h1);
 
 		for(var i = 0; i < this.settings.length; i++) {
-			var setting_box = this.createBox();
+			var setting_box = utils.createBox();
 			setting_box.innerHTML = this.settings[i].title + this.settings[i].get_input(i)
 			gui.tools.appendChild(setting_box);
 		}
@@ -136,54 +124,6 @@ var core = new function() {
 		}
 	};
 
-	this.createInput = function (name, type, id, value, evt) {
-		var box = this.createBox (name);
-		var inp = document.createElement("input");
-		inp.type = type;
-		inp.id = id;
-
-		if(type == "checkbox") {
-			if (value) {
-				inp.checked = "checked";
-			}
-		} else {
-			inp.value = value;
-		}
-
-		if (evt) {
-			inp.onchange = evt;
-		}
-
-		box.appendChild(inp);
-		return box;
-	}
-
-	this.createSelect = function (name, id, value, options, evt) {
-		var box = this.createBox (name);
-		var sel = document.createElement("select");
-		sel.id = id;
-
-		if (evt) {
-			sel.onchange = evt;
-		}
-
-		for (var i = 0; i < options.length; i++) {
-			var opt_name = options[i];
-
-			var opt = document.createElement("option");
-			opt.appendChild(document.createTextNode(opt_name));
-
-			if (opt_name == value) {
-				opt.setAttribute("selected", "selected");
-			}
-
-			sel.appendChild(opt);
-		}
-
-		box.appendChild(sel);
-		return box;
-	}
-
 	this.update_object_gui = function (object_div) {
 		var s = core.get_selected_shape();
 
@@ -194,8 +134,7 @@ var core = new function() {
 		var draw_stroke = s.style.draw_stroke;
 
 		var closed = s.path.closed;
-		var curve = s.path.curve;
-		var arc = s.path.arc;
+		var draw_type = s.path.draw_type;
 
 		var stroke_width = s.style.stroke_width;
 		var stroke_cap = s.style.stroke_cap;
@@ -210,7 +149,7 @@ var core = new function() {
 
 		// Stroke
 		object_div.appendChild(
-			this.createInput("stroke", "color", "color_stroke", stroke, function () {
+			utils.createInput("Stroke", "color", "color_stroke", stroke, function () {
 				core.get_selected_shape().style.stroke = this.value;
 				core.update_tools();
 				core.draw();
@@ -219,7 +158,7 @@ var core = new function() {
 
 		// Fill
 		object_div.appendChild(
-			this.createInput("fill", "color", "color_fill", fill, function () {
+			utils.createInput("Fill", "color", "color_fill", fill, function () {
 				core.get_selected_shape().style.fill = this.value;
 				core.update_tools();
 				core.draw();
@@ -230,7 +169,7 @@ var core = new function() {
 
 		// Draw stroke
 		object_div.appendChild(
-			this.createInput("stroke", "checkbox", "draw_stroke", draw_stroke, function () {
+			utils.createInput("Stroke", "checkbox", "draw_stroke", draw_stroke, function () {
 				core.get_selected_shape().style.draw_stroke = this.checked;
 				core.update_tools();
 				core.draw();
@@ -239,7 +178,7 @@ var core = new function() {
 
 		// Draw fill
 		object_div.appendChild(
-			this.createInput("fill", "checkbox", "draw_fill", draw_fill, function () {
+			utils.createInput("Fill", "checkbox", "draw_fill", draw_fill, function () {
 				core.get_selected_shape().style.draw_fill = this.checked;
 				core.update_tools();
 				core.draw();
@@ -250,45 +189,39 @@ var core = new function() {
 
 		// Closed
 		object_div.appendChild(
-			this.createInput("closed", "checkbox", "path_closed", closed, function () {
+			utils.createInput("Closed", "checkbox", "path_closed", closed, function () {
 				core.get_selected_shape().path.closed = this.checked;
 				core.update_tools();
 				core.draw();
 			})
 		);
 
-		// Arc
+		// Draw type
 		object_div.appendChild(
-			this.createInput("arc", "checkbox", "path_arc", arc, function () {
-				core.get_selected_shape().path.arc = this.checked;
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		// Curve
-		object_div.appendChild(
-			this.createInput("curve", "checkbox", "path_curve", curve, function () {
-				core.get_selected_shape().path.curve = this.checked;
-				core.update_tools();
-				core.draw();
-			})
+			utils.createSelect("Draw type", "draw_type", draw_type,
+				["default", "arc", "curve"],
+				function () {
+					core.get_selected_shape().path.draw_type = this.options[this.selectedIndex].text;
+					core.update_tools();
+					core.draw();
+				}
+			)
 		);
 
 		object_div.appendChild(document.createElement("br"));
 
 		// Stroke width
 		object_div.appendChild(
-			this.createInput("stroke width", "number", "stroke_width", stroke_width, function () {
+			utils.createInput("Stroke width", "number", "stroke_width", stroke_width, function () {
 				core.get_selected_shape().style.stroke_width = parseInt(this.value);
 				core.update_tools();
 				core.draw();
 			})
 		);
 
-		// Stroke width
+		// Stroke cap
 		object_div.appendChild(
-			this.createSelect("stroke cap", "stroke_cap", stroke_cap,
+			utils.createSelect("Stroke cap", "stroke_cap", stroke_cap,
 				["flat", "square", "round"],
 				function () {
 					core.get_selected_shape().style.stroke_cap = this.options[this.selectedIndex].text;
@@ -396,6 +329,15 @@ function load() {
 	canvas.onmouseup = core.mouseup;
 	canvas.onmousemove = core.mousemove;
 	document.onkeydown = core.keydown;
+
+	// TODO: only resize canvas after window is resized
+	window.onresize = function () {
+		canvas.width = window.innerWidth - 200;
+		canvas.height = window.innerHeight;
+		//ctx = canvas.getContext("2d");
+
+		core.draw();
+	};
 
 	ctx = canvas.getContext("2d");
 

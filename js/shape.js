@@ -7,8 +7,7 @@ function shape(points) {
 	this.path = {
 		points : (points || []),
 		closed : false,
-		curve : false,
-		arc : false,
+		draw_type : "default"
 	};
 
 	this.style = {
@@ -42,7 +41,7 @@ function shape(points) {
 
 			ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
 
-			if(this.path.curve) {
+			if(this.path.draw_type == "curve") {
 				for(var i = 1; i < this.path.points.length; i += 2) {
 					var p = this.path.points[i];
 
@@ -59,7 +58,8 @@ function shape(points) {
 					var p2 = this.path.points[j];
 					ctx.quadraticCurveTo(p.x, p.y, p2.x, p2.y);
 				}
-			} else if(this.path.arc) {
+			} else if(this.path.draw_type == "arc") {
+				ctx.moveTo(0, 0);
 				if (this.path.points.length > 1) {
 					var p1 = this.path.points[0];
 					var p2 = this.path.points[1];

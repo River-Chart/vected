@@ -1,5 +1,5 @@
 core.register_tool(new function() {
-	this.title = "pencil";
+	this.title = "Pencil";
 
 	this.pmouseX = 0;
 	this.pmouseY = 0;
