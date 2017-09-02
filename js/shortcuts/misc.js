@@ -2,7 +2,7 @@ core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = false;
 	this.key = 80;
-	this.name = "Toggle preview";
+	this.name = "Toggle Preview";
 
 	this.run = function() {
 		core.preview = !core.preview;
@@ -12,6 +12,23 @@ core.register_shortcut(new function() {
 	};
 }());
 
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = true;
+	this.key = 67;
+	this.name = "Close shape";
+
+	this.run = function() {
+		var s = core.get_selected_shape();
+		if(s) {
+			s.path.closed = !s.path.closed;
+			core.update_tools();
+			core.draw();
+		}
+	};
+}());
+
+/*
 core.register_shortcut(new function() {
 	this.ctrlKey = false;
 	this.shiftKey = true;
@@ -42,7 +59,7 @@ core.register_shortcut(new function() {
 			core.draw();
 		}
 	};
-}());
+}());*/
 
 core.register_shortcut(new function() {
 	this.ctrlKey = false;

@@ -303,6 +303,10 @@ var core = new function() {
 
 			return false;
 		} else {
+			if (document.activeElement.nodeName.toLowerCase() == "input") {
+				return true;
+			}
+
 			if(core.tools[core.tool].keydown && core.tools[core.tool].keydown(e)) {
 				return false;
 			} else {
@@ -343,4 +347,6 @@ function load() {
 
 	gui.tools = document.getElementById("tools");
 	core.update_tools();
+
+	shortcut_list.init();
 }
