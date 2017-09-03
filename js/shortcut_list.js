@@ -13,16 +13,24 @@ var shortcut_list = new function () {
 
 			this.input.onchange = function () {
 				that.update_list();
+			}
 
-				for (var i = 0; i < core.shortcuts.length; i++) {
-					if (core.shortcuts[i].name.toLowerCase().indexOf(that.input.value.toLowerCase()) != -1) {
-						core.shortcuts[i].run();
-						that.close();
+			this.input.onkeydown = function (evt) {
+				evt = evt || window.event;
 
-						break;
+				console.log(evt.keyCode);
+
+				if(evt.keyCode == 13) {
+					for (var i = 0; i < core.shortcuts.length; i++) {
+						if (core.shortcuts[i].name.toLowerCase().indexOf(that.input.value.toLowerCase()) != -1) {
+							core.shortcuts[i].run();
+							that.close();
+
+							break;
+						}
 					}
 				}
-			}
+			};
 
 			this.input.oninput = function () {
 				that.update_list();
@@ -44,10 +52,17 @@ var shortcut_list = new function () {
 				var elm = document.createElement("li");
 				elm.appendChild(document.createTextNode(core.shortcuts[i].name));
 
+				elm.shortcut_id = i;
+				elm.onclick = function () {
+					shortcut_list.input.blur();
+					shortcut_list.close();
+					core.shortcuts[this.shortcut_id].run();
+				};
+
 				var div = document.createElement("div");
-				div.setAttribute("class", "r");
-				div.setAttribute("className", "r");
-				div.appendChild(document.createTextNode(this.shortcut_to_string(core.shortcuts[i])));
+					div.setAttribute("class", "r");
+					div.setAttribute("className", "r");
+					div.appendChild(document.createTextNode(this.shortcut_to_string(core.shortcuts[i])));
 				elm.appendChild(div);
 
 				this.list.appendChild(elm);
@@ -65,20 +80,8 @@ var shortcut_list = new function () {
 		this.overlay.style.display = "block";
 
 		this.input.value = "";
-		this.list.innerHTML = "";
 
-		for (var i = 0; i < core.shortcuts.length; i++) {
-			var elm = document.createElement("li");
-			elm.appendChild(document.createTextNode(core.shortcuts[i].name));
-
-			var div = document.createElement("div");
-				div.setAttribute("class", "r");
-				div.setAttribute("className", "r");
-				div.appendChild(document.createTextNode(this.shortcut_to_string(core.shortcuts[i])));
-			elm.appendChild(div);
-
-			this.list.appendChild(elm);
-		}
+		this.update_list();
 
 		this.input.focus();
 	};
