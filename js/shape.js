@@ -94,7 +94,7 @@ function shape(points) {
 		}
 	};
 
-	this.draw_points = function() {
+	this.draw_points = function (selected) {
 		ctx.translate(this.position.x, this.position.y);
 
 		ctx.fillStyle = "#f0aa55";
@@ -117,6 +117,28 @@ function shape(points) {
 			ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
 			ctx.stroke();
 			ctx.fill();
+		}
+
+		if (selected) {
+			ctx.strokeStyle = "#222";
+
+			var min_x = 0;
+			var min_y = 0;
+
+			var max_x = 0;
+			var max_y = 0;
+
+			for (var i = 0; i < this.path.points.length; i++) {
+				var pt = this.path.points[i]
+
+				min_x = (pt.x < min_x ? pt.x : min_x);
+				min_y = (pt.y < min_y ? pt.y : min_y);
+
+				max_x = (pt.x > max_x ? pt.x : max_x);
+				max_y = (pt.y > max_y ? pt.y : max_y);
+			}
+
+			ctx.strokeRect(min_x, min_y, max_x-min_x, max_y-min_y);
 		}
 
 		ctx.translate(-this.position.x, -this.position.y);

@@ -10,7 +10,7 @@ function project() {
 		for(var i = 0; i < this.shapes.length; i++) {
 			this.shapes[i].draw();
 			if(draw_points) {
-				this.shapes[i].draw_points();
+				this.shapes[i].draw_points(this.selected_shape == i);
 			}
 		}
 	};
