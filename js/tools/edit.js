@@ -1,4 +1,4 @@
-core.register_tool(new function() {
+var TOOL_EDIT = core.register_tool(new function() {
 	this.title = "Edit";
 	this.selected_point = -1;
 
@@ -53,5 +53,19 @@ core.register_tool(new function() {
 		}
 
 		core.update_tools();
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = false;
+	this.key = 69;
+	this.name = "Tool: Edit";
+
+	this.run = function() {
+		core.tool = TOOL_EDIT;
+		core.update_tools();
+		core.draw();
+		return true;
 	};
 }());

@@ -1,4 +1,4 @@
-core.register_tool(new function() {
+var TOOL_DRAW = core.register_tool(new function() {
 	this.title = "Draw";
 	this.selected_point = -1;
 
@@ -68,5 +68,19 @@ core.register_tool(new function() {
 
 	this.mouseup = function() {
 		this.selected_point = -1;
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = false;
+	this.key = 68;
+	this.name = "Tool: Draw";
+
+	this.run = function() {
+		core.tool = TOOL_DRAW;
+		core.update_tools();
+		core.draw();
+		return true;
 	};
 }());

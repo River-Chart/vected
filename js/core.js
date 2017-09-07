@@ -35,6 +35,8 @@ var core = new function() {
 
 	this.register_tool = function(t) {
 		this.tools.push(t);
+
+		return this.tools.length-1;
 	};
 
 	this.register_setting = function(t) {
