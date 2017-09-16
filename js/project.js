@@ -36,6 +36,13 @@ function project() {
 		console.log(this.shapes);
 	};
 
+	this.new = function () {
+		if (confirm ("Create new project?")) {
+			this.shapes = [];
+			this.selected_shape = -1;
+		}
+	};
+
 	this.save = function() {
 		var data = JSON.stringify(this.shapes);
 		data = "data:text/plain;charset=utf-8," + encodeURIComponent(data);
