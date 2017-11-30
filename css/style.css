@@ -1,5 +1,7 @@
 body {
 	background : #f0f0f0;
+	font-family: sans-serif;
+	color: #333;
 }
 
 canvas {
@@ -179,9 +181,17 @@ canvas {
 }
 
 #dialog_shortcut_list ul > li {
+	transition-duration : 0.5s;
+
+	padding: 5px;
+}
+
+#dialog_shortcut_list ul > li:hover {
+	transition-duration : 0.1s;
+
 	padding-top: 5px;
 	padding-bottom: 5px;
-
+	background: #ddaa55;
 }
 
 #menu {

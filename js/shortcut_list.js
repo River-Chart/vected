@@ -29,6 +29,8 @@ var shortcut_list = new function () {
 							break;
 						}
 					}
+				} else if (evt.keyCode == 27) {
+					that.close();
 				}
 			};
 
