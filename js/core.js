@@ -201,7 +201,7 @@ var core = new function() {
 		// Draw type
 		object_div.appendChild(
 			utils.createSelect("Draw type", "draw_type", draw_type,
-				["default", "arc", "curve"],
+				["default", "arc", "curve", "bezier"],
 				function () {
 					core.get_selected_shape().path.draw_type = this.options[this.selectedIndex].text;
 					core.update_tools();

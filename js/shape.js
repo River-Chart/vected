@@ -39,9 +39,9 @@ function shape(points) {
 			ctx.translate(this.position.x, this.position.y);
 			ctx.beginPath();
 
-			ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
 
 			if(this.path.draw_type == "curve") {
+				ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
 				for(var i = 1; i < this.path.points.length; i += 2) {
 					var p = this.path.points[i];
 
@@ -58,8 +58,28 @@ function shape(points) {
 					var p2 = this.path.points[j];
 					ctx.quadraticCurveTo(p.x, p.y, p2.x, p2.y);
 				}
+			} else if(this.path.draw_type == "bezier") {
+				ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
+
+				if (this.path.points.length >= 4) {
+					for(var i = 1; i < this.path.points.length; i += 3) {
+						var p1 = this.path.points[i];
+						var j = i+1;
+						if(j > this.path.points.length-1) {
+							if(this.path.closed) {
+								j = 0;
+							} else {
+								j = this.path.points.length-1;
+							}
+						}
+
+						var p2 = this.path.points[j];
+						var p3 = this.path.points[(j+1 < this.path.points.length ? j+1 : this.path.points.length-1)];
+
+						ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+					}
+				}
 			} else if(this.path.draw_type == "arc") {
-				ctx.moveTo(0, 0);
 				if (this.path.points.length > 1) {
 					var p1 = this.path.points[0];
 					var p2 = this.path.points[1];
@@ -71,6 +91,8 @@ function shape(points) {
 					ctx.arc(0, 0, r, 0, Math.PI*2);
 				}
 			} else {
+				ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
+				
 				for(var i = 1; i < this.path.points.length; i++) {
 					var p = this.path.points[i];
 
