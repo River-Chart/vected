@@ -21,6 +21,7 @@ var core = new function() {
 	this.mouse_pressed = [false, false, false];
 
 	this.snap = false;
+	this.grid = true;
 	this.grid_size = 32;
 	this.preview = false;
 
@@ -76,6 +77,47 @@ var core = new function() {
 		ctx.translate(this.viewport.x, this.viewport.y);
 		this.project.draw(!core.preview);
 		ctx.translate(-this.viewport.x, -this.viewport.y);
+	};
+
+	this.draw_grid = function () {
+		var w = gui.canvas_grid.width;
+		var h = gui.canvas_grid.height;
+		gui.ctx_grid.clearRect(0, 0, w, h);
+
+		if (!this.grid) {
+			return;
+		}
+
+		if (this.grid_size > 4) {
+			gui.ctx_grid.beginPath ();
+			var x = this.viewport.x%this.grid_size;
+			for (var i = x; i < w+x; i+=this.grid_size) {
+				gui.ctx_grid.moveTo (i+0.5, -0.5);
+				gui.ctx_grid.lineTo (i+0.5, h+0.5);
+			}
+
+			var y = this.viewport.y%this.grid_size;
+			for (var i = y; i < h+y; i+=this.grid_size) {
+				gui.ctx_grid.moveTo (-0.5, i+0.5);
+				gui.ctx_grid.lineTo (w+0.5, i+0.5);
+			}
+
+			gui.ctx_grid.lineWidth = 1;
+			gui.ctx_grid.strokeStyle = "#ccc";
+			gui.ctx_grid.stroke ();
+
+			gui.ctx_grid.beginPath ();
+
+			gui.ctx_grid.moveTo (0, this.viewport.y);
+			gui.ctx_grid.lineTo (w, this.viewport.y);
+
+			gui.ctx_grid.moveTo (this.viewport.x, 0);
+			gui.ctx_grid.lineTo (this.viewport.x, h);
+
+			gui.ctx_grid.lineWidth = 2;
+			gui.ctx_grid.strokeStyle = "#666";
+			gui.ctx_grid.stroke ();
+		}
 	};
 
 	this.update_tools = function() {
@@ -264,6 +306,7 @@ var core = new function() {
 			core.viewport.y += dy;
 
 			core.draw();
+			core.draw_grid();
 		}
 
 		core.mouseX_raw = raw_x - core.viewport.x;
@@ -336,19 +379,28 @@ function load() {
 	canvas.onmousemove = core.mousemove;
 	document.onkeydown = core.keydown;
 
+	gui.canvas_grid = document.getElementById("canvas_grid");
+	gui.canvas_grid.width = window.innerWidth - 200;
+	gui.canvas_grid.height = window.innerHeight;
+
 	// TODO: only resize canvas after window is resized
 	window.onresize = function () {
 		canvas.width = window.innerWidth - 200;
 		canvas.height = window.innerHeight;
-		//ctx = canvas.getContext("2d");
+
+		gui.canvas_grid.width = window.innerWidth - 200;
+		gui.canvas_grid.height = window.innerHeight;
 
 		core.draw();
+		core.draw_grid();
 	};
 
 	ctx = canvas.getContext("2d");
 
+	gui.ctx_grid = canvas_grid.getContext("2d");
 	gui.tools = document.getElementById("tools");
 	core.update_tools();
 
 	shortcut_list.init();
+	core.draw_grid();
 }

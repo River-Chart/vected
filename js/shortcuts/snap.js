@@ -7,6 +7,21 @@ core.register_shortcut(new function() {
 	this.run = function() {
 		core.snap = !core.snap;
 		core.update_tools();
+		core.draw_grid();
+		return true;
+	};
+}());
+
+core.register_shortcut(new function() {
+	this.ctrlKey = false;
+	this.shiftKey = false;
+	this.key = 71;
+	this.name = "Toggle Grid";
+
+	this.run = function() {
+		core.grid = !core.grid;
+		core.update_tools();
+		core.draw_grid();
 		return true;
 	};
 }());
@@ -22,6 +37,7 @@ core.register_shortcut(new function() {
 			core.grid_size = core.grid_size / 2;
 		}
 		core.update_tools();
+		core.draw_grid();
 		return true;
 	};
 }());
@@ -35,6 +51,7 @@ core.register_shortcut(new function() {
 	this.run = function() {
 		core.grid_size = core.grid_size * 2;
 		core.update_tools();
+		core.draw_grid();
 		return true;
 	};
 }());

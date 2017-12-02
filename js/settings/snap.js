@@ -13,6 +13,21 @@ core.register_setting(new function() {
 }());
 
 core.register_setting(new function() {
+	this.title = "Grid";
+
+	this.get_input = function(i) {
+		var str = "<input type=\"checkbox\" onchange=\"core.settings[" + i + "].change(this);\" " + (core.grid ? "checked=\"checked\"" : "") + "></input>"
+		return str;
+	};
+
+	this.change = function(v) {
+		core.grid = v.checked;
+		core.update_tools();
+		core.draw_grid();
+	};
+}());
+
+core.register_setting(new function() {
 	this.title = "Grid size";
 
 	this.get_input = function(i) {
@@ -27,5 +42,6 @@ core.register_setting(new function() {
 			core.grid_size = 1;
 		}
 		core.update_tools();
+		core.draw_grid();
 	};
 }());

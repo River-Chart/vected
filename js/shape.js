@@ -92,7 +92,7 @@ function shape(points) {
 				}
 			} else {
 				ctx.moveTo(this.path.points[0].x, this.path.points[0].y);
-				
+
 				for(var i = 1; i < this.path.points.length; i++) {
 					var p = this.path.points[i];
 
@@ -160,7 +160,7 @@ function shape(points) {
 				max_y = (pt.y > max_y ? pt.y : max_y);
 			}
 
-			ctx.strokeRect(min_x, min_y, max_x-min_x, max_y-min_y);
+			ctx.strokeRect(min_x+0.5, min_y+0.5, max_x-min_x, max_y-min_y);
 		}
 
 		ctx.translate(-this.position.x, -this.position.y);
