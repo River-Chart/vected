@@ -129,6 +129,30 @@ function shape(points) {
 		ctx.stroke();
 		ctx.fill();
 
+		if(this.path.draw_type == "bezier" && this.path.points.length >= 2) {
+			ctx.beginPath ();
+			ctx.moveTo (this.path.points[0].x, this.path.points[0].y);
+			ctx.lineTo (this.path.points[1].x, this.path.points[1].y);
+
+			for(var i = 2; i < this.path.points.length; i += 3) {
+				if (i+1 < this.path.points.length) {
+					var p1 = this.path.points[i];
+					var p2 = this.path.points[i+1];
+
+					ctx.moveTo (p1.x, p1.y);
+					ctx.lineTo (p2.x, p2.y);
+
+					if (i+2 < this.path.points.length) {
+						var p3 = this.path.points[i+2];
+						ctx.lineTo (p3.x, p3.y);
+					}
+				}
+			}
+
+			ctx.strokeStyle = "#222";
+			ctx.stroke();
+		}
+
 		ctx.fillStyle = "#f0f0f0";
 		ctx.strokeStyle = "#444";
 
@@ -141,7 +165,8 @@ function shape(points) {
 			ctx.fill();
 		}
 
-		if (selected) {
+
+		if (selected && false) {
 			ctx.strokeStyle = "#222";
 
 			var min_x = 0;

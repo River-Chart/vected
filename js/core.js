@@ -28,10 +28,22 @@ var core = new function() {
 	this.settings = [];
 	this.shortcuts = [];
 
+	this.registered_tabs = [];
+	this.tabs = [];
+
 	this.viewport = {
 		x : 0,
 		y : 0,
 		zoom : 1
+	};
+
+	this.register_tab = function (t) {
+		this.registered_tabs.push(t);
+		return this.registered_tabs.length-1;
+	};
+
+	this.create_tab = function (type) {
+		this.tabs.push (new this.registered_tabs[type] ());
 	}
 
 	this.register_tool = function(t) {
@@ -54,8 +66,7 @@ var core = new function() {
 				return this.settings[i];
 			}
 		}
-	}
-
+	};
 
 	this.get_selected_shape = function() {
 		if(this.project.selected_shape != -1) {
@@ -123,158 +134,23 @@ var core = new function() {
 	this.update_tools = function() {
 		gui.tools.innerHTML = "";
 
-		//console.log("Redraw");
+		for (var i = 0; i < this.tabs.length; i++) {
+			var div = document.createElement("div");
+				div.setAttribute("class", "object");
+				div.setAttribute("className", "object");
 
-		var tools_h1 = document.createElement("h1");
-		tools_h1.appendChild(document.createTextNode("Tools"));
-		gui.tools.appendChild(tools_h1);
+				var h1 = document.createElement("h1");
+				h1.appendChild(document.createTextNode(this.tabs[i].name));
+				div.appendChild(h1);
 
-		for(var i = 0; i < core.tools.length; i++) {
-			var tools_btn = document.createElement("button");
+				this.tabs[i].draw (div);
 
-			tools_btn.tool_id = i;
-			tools_btn.onclick = function () {
-				core.select_tool(this.tool_id);
-			};
+			gui.tools.appendChild(div);
 
-			tools_btn.appendChild(document.createTextNode(core.tools[i].title));
-			gui.tools.appendChild(tools_btn);
-		}
-
-
-		gui.tools.appendChild(document.createElement("br"));
-		gui.tools.appendChild(document.createElement("br"));
-
-		var settings_h1 = document.createElement("h1");
-		settings_h1.appendChild(document.createTextNode("Settings"));
-		gui.tools.appendChild(settings_h1);
-
-		for(var i = 0; i < this.settings.length; i++) {
-			var setting_box = utils.createBox();
-			setting_box.innerHTML = this.settings[i].title + this.settings[i].get_input(i)
-			gui.tools.appendChild(setting_box);
-		}
-
-		gui.tools.appendChild(document.createElement("br"));
-		gui.tools.appendChild(document.createElement("br"));
-
-		if(this.project.selected_shape != -1) {
-			var object_div = document.createElement("div");
-				object_div.setAttribute("class", "object");
-				object_div.setAttribute("className", "object");
-
-				this.update_object_gui(object_div);
-			gui.tools.appendChild(object_div);
+			gui.tools.appendChild(document.createElement("br"));
+			gui.tools.appendChild(document.createElement("br"));
 		}
 	};
-
-	this.update_object_gui = function (object_div) {
-		var s = core.get_selected_shape();
-
-		var stroke = s.style.stroke;
-		var fill = s.style.fill;
-
-		var draw_fill = s.style.draw_fill;
-		var draw_stroke = s.style.draw_stroke;
-
-		var closed = s.path.closed;
-		var draw_type = s.path.draw_type;
-
-		var stroke_width = s.style.stroke_width;
-		var stroke_cap = s.style.stroke_cap;
-
-		/*
-		  Elements
-		*/
-
-		var object_h1 = document.createElement("h1");
-			object_h1.appendChild(document.createTextNode("Object"));
-		object_div.appendChild(object_h1);
-
-		// Stroke
-		object_div.appendChild(
-			utils.createInput("Stroke", "color", "color_stroke", stroke, function () {
-				core.get_selected_shape().style.stroke = this.value;
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		// Fill
-		object_div.appendChild(
-			utils.createInput("Fill", "color", "color_fill", fill, function () {
-				core.get_selected_shape().style.fill = this.value;
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		object_div.appendChild(document.createElement("br"));
-
-		// Draw stroke
-		object_div.appendChild(
-			utils.createInput("Stroke", "checkbox", "draw_stroke", draw_stroke, function () {
-				core.get_selected_shape().style.draw_stroke = this.checked;
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		// Draw fill
-		object_div.appendChild(
-			utils.createInput("Fill", "checkbox", "draw_fill", draw_fill, function () {
-				core.get_selected_shape().style.draw_fill = this.checked;
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		object_div.appendChild(document.createElement("br"));
-
-		// Closed
-		object_div.appendChild(
-			utils.createInput("Closed", "checkbox", "path_closed", closed, function () {
-				core.get_selected_shape().path.closed = this.checked;
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		// Draw type
-		object_div.appendChild(
-			utils.createSelect("Draw type", "draw_type", draw_type,
-				["default", "arc", "curve", "bezier"],
-				function () {
-					core.get_selected_shape().path.draw_type = this.options[this.selectedIndex].text;
-					core.update_tools();
-					core.draw();
-				}
-			)
-		);
-
-		object_div.appendChild(document.createElement("br"));
-
-		// Stroke width
-		object_div.appendChild(
-			utils.createInput("Stroke width", "number", "stroke_width", stroke_width, function () {
-				core.get_selected_shape().style.stroke_width = parseInt(this.value);
-				core.update_tools();
-				core.draw();
-			})
-		);
-
-		// Stroke cap
-		object_div.appendChild(
-			utils.createSelect("Stroke cap", "stroke_cap", stroke_cap,
-				["flat", "square", "round"],
-				function () {
-					core.get_selected_shape().style.stroke_cap = this.options[this.selectedIndex].text;
-					core.update_tools();
-					core.draw();
-				}
-			)
-		);
-	}
 
 	//input
 	this.mousedown = function(e) {
@@ -399,6 +275,11 @@ function load() {
 
 	gui.ctx_grid = canvas_grid.getContext("2d");
 	gui.tools = document.getElementById("tools");
+
+	core.create_tab (TAB_TOOLS);
+	core.create_tab (TAB_SETTINGS);
+	core.create_tab (TAB_OBJECT);
+
 	core.update_tools();
 
 	shortcut_list.init();
