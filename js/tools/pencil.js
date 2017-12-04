@@ -15,15 +15,15 @@ core.register_tool(new function() {
 			};
 
 			my_shape.style.draw_fill = false;
-			my_shape.path.curve = true;
+			my_shape.path.draw_type = "curve";
 
-			core.project.push(my_shape);
-			core.select_shape(core.project.shapes.length - 1);
-
-			s.push({
+			my_shape.push({
 				x : 0,
 				y : 0
 			});
+
+			core.project.push(my_shape);
+			core.select_shape(core.project.shapes.length - 1);
 
 			core.draw();
 			core.update_tools();
@@ -36,7 +36,7 @@ core.register_tool(new function() {
 
 			var s = core.get_selected_shape();
 
-			if(this.distance > 10) {
+			if(this.distance > 5) {
 				s.push({
 					x : core.mouseX - s.position.x,
 					y : core.mouseY - s.position.y
@@ -54,7 +54,7 @@ core.register_tool(new function() {
 
 	this.mouseup = function(e) {
 		if(e.which == 1) {
-
+			core.tool = -1;
 			core.draw();
 			core.update_tools();
 		}
