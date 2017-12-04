@@ -38,6 +38,10 @@ var TAB_OBJECT = core.register_tab (function () {
 
 		var s = core.get_selected_shape();
 
+		if (!s) {
+			return;
+		}
+
 		var stroke = s.style.stroke;
 		var fill = s.style.fill;
 
