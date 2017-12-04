@@ -74,6 +74,7 @@ core.register_shortcut(new function() {
 			zoom : 1
 		}
 		core.draw();
+		core.draw_grid();
 	};
 }());
 
@@ -84,7 +85,7 @@ core.register_shortcut(new function() {
 	this.name = "Move Up";
 
 	this.run = function() {
-		core.project.move_shape(core.project.selected_shape, core.project.selected_shape+1);
+		core.project.move_shape(core.selected_shape, core.selected_shape+1);
 		core.draw();
 	};
 }());
@@ -96,7 +97,7 @@ core.register_shortcut(new function() {
 	this.name = "Move Down";
 
 	this.run = function() {
-		core.project.move_shape(core.project.selected_shape, core.project.selected_shape-1);
+		core.project.move_shape(core.selected_shape, core.selected_shape-1);
 		core.draw();
 	};
 }());

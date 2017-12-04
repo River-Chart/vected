@@ -42,7 +42,7 @@ core.register_tool(new function() {
 				if(utils.is_inside(my_shape.position.x, my_shape.position.y,
 							this.start_x, this.start_y,core.mouseX, core.mouseY)) {
 			 		this.selected_shapes.push(i);
-			 		core.project.select(i);
+			 		core.select_shape(i);
 			 	}
 			}
 

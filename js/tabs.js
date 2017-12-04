@@ -32,7 +32,7 @@ var TAB_OBJECT = core.register_tab (function () {
 	this.name = "Object";
 
 	this.draw = function (container) {
-		if(core.project.selected_shape == -1) {
+		if(core.selected_shape == -1) {
 			return;
 		}
 

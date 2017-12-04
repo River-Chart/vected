@@ -18,7 +18,7 @@ core.register_tool(new function() {
 			my_shape.path.curve = true;
 
 			core.project.push(my_shape);
-			core.project.select(core.project.shapes.length - 1);
+			core.select_shape(core.project.shapes.length - 1);
 
 			s.push({
 				x : 0,

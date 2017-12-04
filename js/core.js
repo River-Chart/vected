@@ -6,8 +6,9 @@ var gui = {
 var core = new function() {
 	this.project = new project();
 	this.mode = 0;
-	this.tool = 0;
+	this.tool = -1;
 	this.tools = [];
+	this.tool_edit = null;
 
 	this.mouseX = 0;
 	this.mouseY = 0;
@@ -36,6 +37,8 @@ var core = new function() {
 		y : 0,
 		zoom : 1
 	};
+
+	this.selected_shape = -1;
 
 	this.register_tab = function (t) {
 		this.registered_tabs.push(t);
@@ -68,12 +71,17 @@ var core = new function() {
 		}
 	};
 
-	this.get_selected_shape = function() {
-		if(this.project.selected_shape != -1) {
-			return this.project.shapes[this.project.selected_shape];
+	this.get_selected_shape = function () {
+		console.log(this.selected_shape);
+		if(this.selected_shape != -1) {
+			return this.project.shapes[this.selected_shape];
 		} else {
 			return null;
 		}
+	};
+
+	this.select_shape = function (id) {
+		this.selected_shape = id;
 	};
 
 	this.select_tool = function(i) {
@@ -156,7 +164,9 @@ var core = new function() {
 	this.mousedown = function(e) {
 		core.mouse_pressed[e.which] = true;
 
-		if(core.tools[core.tool].mousedown) {
+		if (core.tool == -1) {
+			core.tool_edit.mousedown(e);
+		} else if(core.tools[core.tool].mousedown) {
 			core.tools[core.tool].mousedown(e);
 		}
 	};
@@ -164,7 +174,9 @@ var core = new function() {
 	this.mouseup = function(e) {
 		core.mouse_pressed[e.which] = false;
 
-		if(core.tools[core.tool].mouseup) {
+		if (core.tool == -1) {
+			core.tool_edit.mouseup(e);
+		} else if(core.tools[core.tool].mouseup) {
 			core.tools[core.tool].mouseup(e);
 		}
 	};
@@ -196,7 +208,9 @@ var core = new function() {
 			core.mouseY = Math.floor(core.mouseY_raw/core.grid_size+0.5)*core.grid_size;
 		}
 
-		if(core.tools[core.tool].mousemove) {
+		if (core.tool == -1) {
+			core.tool_edit.mousemove(e);
+		} else if(core.tools[core.tool].mousemove) {
 			core.tools[core.tool].mousemove(e);
 		}
 
@@ -228,7 +242,9 @@ var core = new function() {
 				return true;
 			}
 
-			if(core.tools[core.tool].keydown && core.tools[core.tool].keydown(e)) {
+			if (e.keyCode == 27) {
+				core.tool = -1;
+			} else if(core.tool != -1 && core.tools[core.tool].keydown && core.tools[core.tool].keydown(e)) {
 				return false;
 			} else {
 				console.log(e.keyCode)
@@ -254,6 +270,10 @@ function load() {
 	canvas.onmouseup = core.mouseup;
 	canvas.onmousemove = core.mousemove;
 	document.onkeydown = core.keydown;
+
+	canvas.oncontextmenu = function (e) {
+		e.preventDefault();
+	};
 
 	gui.canvas_grid = document.getElementById("canvas_grid");
 	gui.canvas_grid.width = window.innerWidth - 200;

@@ -1,6 +1,5 @@
 function project() {
 	this.shapes = [];
-	this.selected_shape = -1;
 
 	this.push = function(obj) {
 		this.shapes.push(obj);
@@ -9,14 +8,11 @@ function project() {
 	this.draw = function(draw_points) {
 		for(var i = 0; i < this.shapes.length; i++) {
 			this.shapes[i].draw();
+
 			if(draw_points) {
-				this.shapes[i].draw_points(this.selected_shape == i);
+				this.shapes[i].draw_points(core.selected_shape == i);
 			}
 		}
-	};
-
-	this.select = function(s) {
-		this.selected_shape = s;
 	};
 
 	this.move_shape = function(from, to) {
@@ -31,7 +27,7 @@ function project() {
 		var my_shape = this.shapes.splice(from, 1)[0];
 		this.shapes.splice(to, 0, my_shape);
 
-		this.selected_shape = to;
+		core.selected_shape = to;
 
 		console.log(this.shapes);
 	};
@@ -39,7 +35,7 @@ function project() {
 	this.new = function () {
 		if (confirm ("Create new project?")) {
 			this.shapes = [];
-			this.selected_shape = -1;
+			core.selected_shape = -1;
 		}
 	};
 

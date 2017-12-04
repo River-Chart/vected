@@ -116,6 +116,31 @@ function shape(points) {
 		}
 	};
 
+	this.get_bounding_box = function () {
+		var min_x = 0;
+		var min_y = 0;
+
+		var max_x = 0;
+		var max_y = 0;
+
+		for (var i = 0; i < this.path.points.length; i++) {
+			var pt = this.path.points[i]
+
+			min_x = (pt.x < min_x ? pt.x : min_x);
+			min_y = (pt.y < min_y ? pt.y : min_y);
+
+			max_x = (pt.x > max_x ? pt.x : max_x);
+			max_y = (pt.y > max_y ? pt.y : max_y);
+		}
+
+		return {
+			x: min_x,
+			y: min_y,
+			w: max_x-min_x,
+			h: max_y-min_y
+		};
+	};
+
 	this.draw_points = function (selected) {
 		ctx.translate(this.position.x, this.position.y);
 
@@ -163,29 +188,6 @@ function shape(points) {
 			ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
 			ctx.stroke();
 			ctx.fill();
-		}
-
-
-		if (selected && false) {
-			ctx.strokeStyle = "#222";
-
-			var min_x = 0;
-			var min_y = 0;
-
-			var max_x = 0;
-			var max_y = 0;
-
-			for (var i = 0; i < this.path.points.length; i++) {
-				var pt = this.path.points[i]
-
-				min_x = (pt.x < min_x ? pt.x : min_x);
-				min_y = (pt.y < min_y ? pt.y : min_y);
-
-				max_x = (pt.x > max_x ? pt.x : max_x);
-				max_y = (pt.y > max_y ? pt.y : max_y);
-			}
-
-			ctx.strokeRect(min_x+0.5, min_y+0.5, max_x-min_x, max_y-min_y);
 		}
 
 		ctx.translate(-this.position.x, -this.position.y);

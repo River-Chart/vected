@@ -1,16 +1,19 @@
-var TOOL_EDIT = core.register_tool(new function() {
+core.tool_edit = (new function() {
 	this.title = "Edit";
+	this.draw_points = true;
 	this.selected_point = -1;
 
 	this.mousedown = function(e) {
 		if(e.which == 1) {
+			core.select_shape(-1);
+
 			for(var i = 0; i < core.project.shapes.length; i++) {
 				var my_shape = core.project.shapes[i];
 
 				if(utils.dist(core.mouseX_raw, core.mouseY_raw,
 						my_shape.position.x, my_shape.position.y) < 10) {
 					this.selected_point = -2;
-					core.project.select(i);
+					core.select_shape(i);
 				}
 
 				for(var j = 0; j < my_shape.path.points.length; j++) {
@@ -19,7 +22,7 @@ var TOOL_EDIT = core.register_tool(new function() {
 					if(utils.dist(core.mouseX_raw, core.mouseY_raw,
 							p.x + my_shape.position.x, p.y + my_shape.position.y) < 10) {
 						this.selected_point = j;
-						core.project.select(i);
+						core.select_shape(i);
 					}
 				}
 			}
@@ -53,19 +56,5 @@ var TOOL_EDIT = core.register_tool(new function() {
 		}
 
 		core.update_tools();
-	};
-}());
-
-core.register_shortcut(new function() {
-	this.ctrlKey = false;
-	this.shiftKey = false;
-	this.key = 69;
-	this.name = "Tool: Edit";
-
-	this.run = function() {
-		core.tool = TOOL_EDIT;
-		core.update_tools();
-		core.draw();
-		return true;
 	};
 }());

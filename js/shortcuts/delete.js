@@ -23,7 +23,7 @@ core.register_shortcut(new function() {
 	this.run = function() {
 		var s = core.get_selected_shape();
 		if(s) {
-			core.project.shapes.splice(core.project.selected_shape, 1);
+			core.project.shapes.splice(core.selected_shape, 1);
 			core.draw();
 			core.update_tools();
 			return true;
