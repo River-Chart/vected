@@ -89,6 +89,7 @@ var core = new function() {
 		if(this.tools[i].select) {
 			this.tools[i].select();
 		}
+		this.update_tools();
 	};
 
 	this.draw = function() {
@@ -244,6 +245,7 @@ var core = new function() {
 
 			if (e.keyCode == 27) {
 				core.tool = -1;
+				core.update_tools();
 			} else if(core.tool != -1 && core.tools[core.tool].keydown && core.tools[core.tool].keydown(e)) {
 				return false;
 			} else {

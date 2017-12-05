@@ -31,10 +31,19 @@ canvas {
 
 #tools button {
 	transition-duration : 0.5s;
-	background : #f9f9f9;
 	border : none;
 	padding : 10px;
 	cursor : pointer;
+}
+
+#tools button:not(.selected) {
+	transition-duration : 0.5s;
+	background : #f9f9f9;
+}
+
+#tools .selected {
+	transition-duration : 0.5s;
+	background : #ddaa55;
 }
 
 #tools button:hover {

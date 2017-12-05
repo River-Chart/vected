@@ -5,6 +5,11 @@ var TAB_TOOLS = core.register_tab (function () {
 		for(var i = 0; i < core.tools.length; i++) {
 			var tools_btn = document.createElement("button");
 
+			if (i == core.tool) {
+				tools_btn.setAttribute("class", "selected");
+				tools_btn.setAttribute("className", "selected");
+			}
+
 			tools_btn.tool_id = i;
 			tools_btn.onclick = function () {
 				core.select_tool(this.tool_id);

@@ -54,7 +54,6 @@ core.register_tool(new function() {
 
 	this.mouseup = function(e) {
 		if(e.which == 1) {
-			core.tool = -1;
 			core.draw();
 			core.update_tools();
 		}
