@@ -95,7 +95,17 @@ var core = new function() {
 	this.draw = function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.translate(this.viewport.x, this.viewport.y);
+
 		this.project.draw(!core.preview);
+
+		if (this.tool == -1) {
+			if (this.tool_edit.draw) {
+				this.tool_edit.draw();
+			}
+		} else if(this.tools[this.tool].draw) {
+			this.tools[this.tool].draw();
+		}
+
 		ctx.translate(-this.viewport.x, -this.viewport.y);
 	};
 
