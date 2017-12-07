@@ -3,6 +3,7 @@ function project() {
 
 	this.push = function(obj) {
 		this.shapes.push(obj);
+		return this.shapes.length-1;
 	};
 
 	this.draw = function(draw_points) {
