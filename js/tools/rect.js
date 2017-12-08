@@ -7,10 +7,7 @@ var TOOL_RECT = core.register_tool(new function() {
 	};
 
 	this.mousedown = function(e) {
-		if (e.which == 3) {
-			core.tool = -1;
-			return;
-		} else if (e.which == 1) {
+		if (e.which == 1) {
 			var index = core.project.push(new shape());
 			core.select_shape(index);
 

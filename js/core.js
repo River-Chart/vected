@@ -178,7 +178,12 @@ var core = new function() {
 		if (core.tool == -1) {
 			core.tool_edit.mousedown(e);
 		} else if(core.tools[core.tool].mousedown) {
-			core.tools[core.tool].mousedown(e);
+			if (e.which == 3) {
+				core.tool = -1;
+				core.update_tools();
+			} else {
+				core.tools[core.tool].mousedown(e);
+			}
 		}
 	};
 

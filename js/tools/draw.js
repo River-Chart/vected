@@ -5,11 +5,6 @@ var TOOL_DRAW = core.register_tool(new function() {
 	this.mousedown = function(e) {
 		var s = core.get_selected_shape();
 
-		if (e.which == 3) {
-			core.tool = -1;
-			return;
-		}
-
 		if(s && !e.shiftKey) {
 			if(e.which == 1) {
 				s.push({
