@@ -1,19 +1,18 @@
-var shortcut_list = new function () {
-	this.dialog = null;
-	this.overlay = null;
+var DIALOG_SHORTCUT_LIST = core.register_dialog(function (container) {
+	this.dialog = container;
 
 	this.init = function () {
-		this.overlay = document.getElementById("overlay");
-		this.dialog = document.getElementById("dialog_shortcut_list");
-
 		var that = this;
-
 		this.input = document.createElement("input");
 			this.input.type = "text";
 
 			this.input.onchange = function () {
 				that.update_list();
-			}
+			};
+
+			this.input.oninput = function () {
+				that.update_list();
+			};
 
 			this.input.onkeydown = function (evt) {
 				evt = evt || window.event;
@@ -23,31 +22,25 @@ var shortcut_list = new function () {
 				if(evt.keyCode == 13) {
 					for (var i = 0; i < core.shortcuts.length; i++) {
 						if (core.shortcuts[i].name.toLowerCase().indexOf(that.input.value.toLowerCase()) != -1) {
+							core.close_dialog();
 							core.shortcuts[i].run();
-							that.close();
-
 							break;
 						}
 					}
-				} else if (evt.keyCode == 27) {
-					that.close();
 				}
 			};
-
-			this.input.oninput = function () {
-				that.update_list();
-			}
 		this.dialog.appendChild(this.input);
 
 		this.list = document.createElement("ul");
 		this.dialog.appendChild(this.list);
 
-		this.dialog.style.display = "none";
-		this.overlay.style.display = "none";
+		this.input.focus();
+		this.update_list ();
 	};
 
 	this.update_list = function () {
 		this.list.innerHTML = "";
+		var that = this;
 
 		for (var i = 0; i < core.shortcuts.length; i++) {
 			if (core.shortcuts[i].name.toLowerCase().indexOf(this.input.value.toLowerCase()) != -1) {
@@ -56,8 +49,7 @@ var shortcut_list = new function () {
 
 				elm.shortcut_id = i;
 				elm.onclick = function () {
-					shortcut_list.input.blur();
-					shortcut_list.close();
+					core.close_dialog();
 					core.shortcuts[this.shortcut_id].run();
 				};
 
@@ -70,28 +62,9 @@ var shortcut_list = new function () {
 				this.list.appendChild(elm);
 			}
 		}
-	}
-
-	this.open = function () {
-		var that = this;
-		this.overlay.onclick = function () {
-			that.close();
-		}
-
-		this.dialog.style.display = "block";
-		this.overlay.style.display = "block";
-
-		this.input.value = "";
-
-		this.update_list();
-
-		this.input.focus();
 	};
 
 	this.close = function () {
-		this.dialog.style.display = "none";
-		this.overlay.style.display = "none";
-
 		this.input.blur();
 	};
 
@@ -111,7 +84,7 @@ var shortcut_list = new function () {
 			return str + String.fromCharCode(s.key);
 		}
 	};
-} ();
+});
 
 core.register_shortcut(new function() {
 	this.ctrlKey = false;
@@ -120,7 +93,7 @@ core.register_shortcut(new function() {
 	this.name = "Open Shortcut List";
 
 	this.run = function() {
-		shortcut_list.open();
+		core.open_dialog (DIALOG_SHORTCUT_LIST);
 		return true;
 	};
 }());

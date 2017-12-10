@@ -2,6 +2,18 @@ body {
 	background : #f0f0f0;
 	font-family: sans-serif;
 	color: #333;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+input, textarea {
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
 }
 
 canvas {
@@ -90,17 +102,12 @@ canvas {
 	background : #f9f9f9;
 	border : 1px solid grey;
 	padding-left : 0px;
-	padding-right : 0px;
+	padding-right :5px;
 	width : 70px;
 
 	-webkit-appearance : textfield;
 	-moz-appearance : textfield;
 	appearance : textfield;
-}
-
-#tools input[type="number"]:hover {
-	transition-duration : 0.1s;
-	background : #ddaa55;
 }
 
 #tools input[type="checkbox"] {
@@ -152,7 +159,7 @@ canvas {
 	z-index: 9;
 }
 
-#dialog_shortcut_list {
+#dialog_container {
 	position: absolute;
 
 	top: 50px;
@@ -174,7 +181,7 @@ canvas {
 	z-index: 10;
 }
 
-#dialog_shortcut_list input[type="text"] {
+#dialog_container input[type="text"] {
 	width: 100%;
 	margin-bottom: 10px;
 
@@ -183,19 +190,19 @@ canvas {
 	padding: 4px;
 }
 
-#dialog_shortcut_list ul {
+#dialog_container ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-#dialog_shortcut_list ul > li {
+#dialog_container ul > li {
 	transition-duration : 0.5s;
 
 	padding: 5px;
 }
 
-#dialog_shortcut_list ul > li:hover {
+#dialog_container ul > li:hover {
 	transition-duration : 0.1s;
 
 	padding-top: 5px;

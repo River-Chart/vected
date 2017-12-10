@@ -32,6 +32,13 @@ var core = new function() {
 	this.registered_tabs = [];
 	this.tabs = [];
 
+	this.dialogs = [];
+	this.dialog = {
+		open_dialog: null,
+		container  : null,
+		overlay    : null
+	};
+
 	this.viewport = {
 		x : 0,
 		y : 0,
@@ -40,6 +47,8 @@ var core = new function() {
 
 	this.selected_shape = -1;
 
+	// Tabs
+
 	this.register_tab = function (t) {
 		this.registered_tabs.push(t);
 		return this.registered_tabs.length-1;
@@ -47,7 +56,53 @@ var core = new function() {
 
 	this.create_tab = function (type) {
 		this.tabs.push (new this.registered_tabs[type] ());
-	}
+	};
+
+	// Dialog
+
+	this.init_dialog = function () {
+		this.dialog.container = document.getElementById ("dialog_container");
+		this.dialog.overlay = document.getElementById ("overlay");
+
+		this.dialog.container.style.display = "none";
+		this.dialog.overlay.style.display = "none";
+	};
+
+	this.register_dialog = function (def) {
+		this.dialogs.push(def);
+		return this.dialogs.length-1;
+	};
+
+	this.open_dialog = function (type) {
+		if (!this.dialog.open_dialog) {
+			this.dialog.container.style.display = "block";
+			this.dialog.overlay.style.display = "block";
+
+			this.dialog.open_dialog = new this.dialogs[type] (
+				this.dialog.container
+			);
+
+			this.dialog.open_dialog.init ();
+			return true;
+		}
+
+		return false;
+	};
+
+	this.close_dialog = function () {
+		this.dialog.container.style.display = "none";
+		this.dialog.overlay.style.display = "none";
+
+		if (this.dialog.open_dialog) {
+			this.dialog.open_dialog.close();
+			this.dialog.open_dialog = null;
+
+			this.dialog.container.innerHTML = "";
+			return true;
+		}
+	};
+
+	// Tools
 
 	this.register_tool = function(t) {
 		this.tools.push(t);
@@ -55,12 +110,10 @@ var core = new function() {
 		return this.tools.length-1;
 	};
 
+	// Settings
+
 	this.register_setting = function(t) {
 		this.settings.push(t);
-	};
-
-	this.register_shortcut = function(t) {
-		this.shortcuts.push(t);
 	};
 
 	this.get_setting = function(t) {
@@ -70,6 +123,13 @@ var core = new function() {
 			}
 		}
 	};
+
+	// Shortcuts
+
+	this.register_shortcut = function(t) {
+		this.shortcuts.push(t);
+	};
+
 
 	this.get_selected_shape = function () {
 		console.log(this.selected_shape);
@@ -254,15 +314,21 @@ var core = new function() {
 
 			return false;
 		} else {
-			if (document.activeElement.nodeName.toLowerCase() == "input") {
+			if (document.activeElement.nodeName.toLowerCase() == "input" && !core.dialog.open_dialog) {
 				return true;
 			}
 
 			if (e.keyCode == 27) {
-				core.tool = -1;
-				core.update_tools();
-			} else if(core.tool != -1 && core.tools[core.tool].keydown && core.tools[core.tool].keydown(e)) {
-				return false;
+				if (core.dialog.open_dialog) {
+					core.close_dialog();
+				} else {
+					core.tool = -1;
+					core.update_tools();
+				}
+			} else if(core.tool != -1 && core.tools[core.tool].keydown) {
+				if (core.tools[core.tool].keydown(e)) {
+					return false;
+				}
 			} else {
 				console.log(e.keyCode)
 				for(var i = 0; i < core.shortcuts.length; i++) {
@@ -313,12 +379,12 @@ function load() {
 	gui.ctx_grid = canvas_grid.getContext("2d");
 	gui.tools = document.getElementById("tools");
 
+	core.init_dialog ();
+
 	core.create_tab (TAB_TOOLS);
 	core.create_tab (TAB_SETTINGS);
 	core.create_tab (TAB_OBJECT);
 
 	core.update_tools();
-
-	shortcut_list.init();
 	core.draw_grid();
 }
