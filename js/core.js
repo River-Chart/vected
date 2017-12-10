@@ -66,6 +66,10 @@ var core = new function() {
 
 		this.dialog.container.style.display = "none";
 		this.dialog.overlay.style.display = "none";
+
+		this.dialog.overlay.onclick = function (evt) {
+			core.close_dialog();
+		};
 	};
 
 	this.register_dialog = function (def) {
@@ -132,7 +136,6 @@ var core = new function() {
 
 
 	this.get_selected_shape = function () {
-		console.log(this.selected_shape);
 		if(this.selected_shape != -1) {
 			return this.project.shapes[this.selected_shape];
 		} else {
