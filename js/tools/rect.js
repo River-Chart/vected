@@ -24,17 +24,25 @@ var TOOL_RECT = core.register_tool(new function() {
 		core.draw();
 	};
 
-	this.mousemove = function() {
+	this.mousemove = function(evt) {
 		if(core.mouse_pressed[1]) {
 			var s = core.get_selected_shape();
 
-			this.rect.end = {x:core.mouseX, y:core.mouseY};
+
+			if (evt.shiftKey) {
+				if (core.mouseX > core.mouseY) {
+					this.rect.end = {x:core.mouseX, y:core.mouseX-this.rect.start.x+this.rect.start.y};
+				} else {
+					this.rect.end = {x:core.mouseY-this.rect.start.y+this.rect.start.x, y:core.mouseY};
+				}
+			} else {
+				this.rect.end = {x:core.mouseX, y:core.mouseY};
+			}
 
 			var x1 = this.rect.start.x;
 			var x2 = this.rect.end.x;
 			var y1 = this.rect.start.y;
 			var y2 = this.rect.end.y;
-
 
 			s.position.x = (x1+x2)/2;
 			s.position.y = (y1+y2)/2;
