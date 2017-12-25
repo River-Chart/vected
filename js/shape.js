@@ -146,11 +146,11 @@ function shape(points) {
 
 		ctx.fillStyle = "#f0aa55";
 		ctx.strokeStyle = "#444";
-		ctx.lineWidth = 1;
+		ctx.lineWidth = 1/core.viewport.zoom;
 		ctx.lineCap = "butt";
 
 		ctx.beginPath();
-		ctx.arc(0, 0, 5, 0, Math.PI*2);
+		ctx.arc(0, 0, 5/core.viewport.zoom, 0, Math.PI*2);
 		ctx.stroke();
 		ctx.fill();
 
@@ -185,7 +185,7 @@ function shape(points) {
 			var p = this.path.points[i];
 
 			ctx.beginPath();
-			ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
+			ctx.arc(p.x, p.y, 5/core.viewport.zoom, 0, Math.PI*2);
 			ctx.stroke();
 			ctx.fill();
 		}

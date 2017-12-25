@@ -19,7 +19,7 @@ core.tool_edit = (new function() {
 
 	this.draw = function () {
 		if (this.mode == MODE_SELECT) {
-			ctx.lineWidth = 2;
+			ctx.lineWidth = 2/core.viewport.zoom;
 			ctx.strokeStyle = "#ddaa55";
 
 			ctx.strokeRect (
@@ -37,7 +37,7 @@ core.tool_edit = (new function() {
 				var my_shape = core.project.shapes[i];
 
 				if(utils.dist(core.mouseX_raw, core.mouseY_raw,
-						my_shape.position.x, my_shape.position.y) < 10) {
+						my_shape.position.x, my_shape.position.y) < 10/core.viewport.zoom) {
 					this.selected_point = -2;
 					this.mode = MODE_MOVE_SHAPE;
 					core.select_shape(i);
@@ -49,7 +49,7 @@ core.tool_edit = (new function() {
 					var p = my_shape.path.points[j];
 
 					if(utils.dist(core.mouseX_raw, core.mouseY_raw,
-							p.x + my_shape.position.x, p.y + my_shape.position.y) < 10) {
+							p.x + my_shape.position.x, p.y + my_shape.position.y) < 10/core.viewport.zoom) {
 						this.selected_point = j;
 						this.mode = MODE_MOVE_POINT;
 						core.select_shape(i);

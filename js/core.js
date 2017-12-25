@@ -157,6 +157,9 @@ var core = new function() {
 
 	this.draw = function() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		ctx.translate (canvas.width/2, canvas.height/2);
+		ctx.scale (this.viewport.zoom, this.viewport.zoom);
 		ctx.translate(this.viewport.x, this.viewport.y);
 
 		this.project.draw(!core.preview);
@@ -170,6 +173,8 @@ var core = new function() {
 		}
 
 		ctx.translate(-this.viewport.x, -this.viewport.y);
+		ctx.scale (1/this.viewport.zoom, 1/this.viewport.zoom);
+		ctx.translate (-canvas.width/2, -canvas.height/2);
 	};
 
 	this.draw_grid = function () {
@@ -183,14 +188,14 @@ var core = new function() {
 
 		if (this.grid_size > 4) {
 			gui.ctx_grid.beginPath ();
-			var x = this.viewport.x%this.grid_size;
-			for (var i = x; i < w+x; i+=this.grid_size) {
+			var x = (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2))%(this.grid_size*this.viewport.zoom);
+			for (var i = x; i < w+x; i+=this.grid_size*this.viewport.zoom) {
 				gui.ctx_grid.moveTo (i+0.5, -0.5);
 				gui.ctx_grid.lineTo (i+0.5, h+0.5);
 			}
 
-			var y = this.viewport.y%this.grid_size;
-			for (var i = y; i < h+y; i+=this.grid_size) {
+			var y = (this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2))%(this.grid_size*this.viewport.zoom);
+			for (var i = y; i < h+y; i+=this.grid_size*this.viewport.zoom) {
 				gui.ctx_grid.moveTo (-0.5, i+0.5);
 				gui.ctx_grid.lineTo (w+0.5, i+0.5);
 			}
@@ -201,11 +206,11 @@ var core = new function() {
 
 			gui.ctx_grid.beginPath ();
 
-			gui.ctx_grid.moveTo (0, this.viewport.y);
-			gui.ctx_grid.lineTo (w, this.viewport.y);
+			gui.ctx_grid.moveTo (0, this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2));
+			gui.ctx_grid.lineTo (w, this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2));
 
-			gui.ctx_grid.moveTo (this.viewport.x, 0);
-			gui.ctx_grid.lineTo (this.viewport.x, h);
+			gui.ctx_grid.moveTo (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2), 0);
+			gui.ctx_grid.lineTo (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2), h);
 
 			gui.ctx_grid.lineWidth = 2;
 			gui.ctx_grid.strokeStyle = "#666";
@@ -261,13 +266,15 @@ var core = new function() {
 	};
 
 	this.mousemove = function(e) {
-		var raw_x = e.pageX - 200;
+		var raw_x = e.pageX - 250;
 		var raw_y = e.pageY;
 
+		core.mouseX_raw = (raw_x- canvas.width/2)/core.viewport.zoom - core.viewport.x;
+		core.mouseY_raw = (raw_y - canvas.height/2)/core.viewport.zoom - core.viewport.y;
 
 		if (core.mouse_pressed[2] && !e.shiftKey) {
-			var dx = raw_x - this.pmouseX_raw;
-			var dy = raw_y - this.pmouseY_raw;
+			var dx = core.mouseX_raw - this.pmouseX_raw;
+			var dy = core.mouseY_raw - this.pmouseY_raw;
 
 			core.viewport.x += dx;
 			core.viewport.y += dy;
@@ -276,8 +283,8 @@ var core = new function() {
 			core.draw_grid();
 		}
 
-		core.mouseX_raw = raw_x - core.viewport.x;
-		core.mouseY_raw = raw_y - core.viewport.y;
+		core.mouseX_raw = (raw_x- canvas.width/2)/core.viewport.zoom - core.viewport.x;
+		core.mouseY_raw = (raw_y - canvas.height/2)/core.viewport.zoom - core.viewport.y;
 
 		if(!core.snap) {
 			core.mouseX = core.mouseX_raw;
@@ -293,8 +300,20 @@ var core = new function() {
 			core.tools[core.tool].mousemove(e);
 		}
 
-		this.pmouseX_raw = raw_x;
-		this.pmouseY_raw = raw_y;
+		this.pmouseX_raw = core.mouseX_raw;
+		this.pmouseY_raw = core.mouseY_raw;
+	};
+
+	this.wheel = function (evt) {
+		if (evt.deltaY < 0) {
+			core.viewport.zoom *= 1.2;
+		} else {
+			core.viewport.zoom *= 0.8;
+		}
+
+		core.viewport.zoom = Math.max (core.viewport.zoom, 0.1);
+		core.draw ();
+		core.draw_grid ();
 	};
 
 	this.keydown = function(e) {
@@ -349,12 +368,14 @@ var core = new function() {
 
 function load() {
 	canvas = document.getElementById("canvas");
-	canvas.width = window.innerWidth - 200;
+	canvas.width = window.innerWidth - 250;
 	canvas.height = window.innerHeight;
 
 	canvas.onmousedown = core.mousedown;
 	canvas.onmouseup = core.mouseup;
 	canvas.onmousemove = core.mousemove;
+	canvas.onwheel = core.wheel;
+
 	document.onkeydown = core.keydown;
 
 	canvas.oncontextmenu = function (e) {
@@ -362,15 +383,15 @@ function load() {
 	};
 
 	gui.canvas_grid = document.getElementById("canvas_grid");
-	gui.canvas_grid.width = window.innerWidth - 200;
+	gui.canvas_grid.width = window.innerWidth - 250;
 	gui.canvas_grid.height = window.innerHeight;
 
 	// TODO: only resize canvas after window is resized
 	window.onresize = function () {
-		canvas.width = window.innerWidth - 200;
+		canvas.width = window.innerWidth - 250;
 		canvas.height = window.innerHeight;
 
-		gui.canvas_grid.width = window.innerWidth - 200;
+		gui.canvas_grid.width = window.innerWidth - 250;
 		gui.canvas_grid.height = window.innerHeight;
 
 		core.draw();
