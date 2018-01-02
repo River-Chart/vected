@@ -26,9 +26,9 @@ canvas {
 	float: right;
 }
 
-#tools {
+#sidebar {
 	position : fixed;
-	top : 50px;
+	top : 45px;
 	left : 0px;
 
 	width : 230px;
@@ -41,29 +41,29 @@ canvas {
 	cursor : default;
 }
 
-#tools button {
+#sidebar button {
 	transition-duration : 0.5s;
 	border : none;
 	padding : 10px;
 	cursor : pointer;
 }
 
-#tools button:not(.selected) {
+#sidebar button:not(.selected) {
 	transition-duration : 0.5s;
 	background : #f9f9f9;
 }
 
-#tools .selected {
+#sidebar .selected {
 	transition-duration : 0.5s;
-	background : #ddaa55;
+	background : #336edd;
 }
 
-#tools button:hover {
+#sidebar button:hover {
 	transition-duration : 0.1s;
-	background : #ddaa55;
+	background : #336edd;
 }
 
-#tools h1 {
+#sidebar h1 {
 	margin : 0;
 	font-weight : normal;
 	font-size : 12px;
@@ -71,18 +71,18 @@ canvas {
 	padding-bottom: 10px;
 }
 
-#tools .box {
+#sidebar .box {
 	width : calc(100% - 10px);
 	height : 30px;
 	margin-left: 10px;
 }
 
-#tools .box > input {
+#sidebar .box > input {
 	float : right;
 }
 
 
-#tools input[type="color"] {
+#sidebar input[type="color"] {
 	transition-duration : 0.5s;
 	background : #f9f9f9;
 	border : none;
@@ -92,12 +92,12 @@ canvas {
 	cursor : pointer;
 }
 
-#tools input[type="color"]:hover {
+#sidebar input[type="color"]:hover {
 	transition-duration : 0.1s;
-	background : #ddaa55;
+	background : #336edd;
 }
 
-#tools input[type="number"] {
+#sidebar input[type="number"] {
 	transition-duration : 0.5s;
 	background : #f9f9f9;
 	border : 1px solid grey;
@@ -110,11 +110,11 @@ canvas {
 	appearance : textfield;
 }
 
-#tools input[type="checkbox"] {
+#sidebar input[type="checkbox"] {
 	cursor : pointer;
 }
 
-#tools select {
+#sidebar select {
 	transition-duration : 0.5s;
 	background : #f9f9f9;
 	border : 1px solid grey;
@@ -128,23 +128,23 @@ canvas {
 	appearance : none;
 }
 
-#tools select option {
+#sidebar select option {
 	border : none;
 }
 
-#tools select:hover {
-	background : #ddaa55;
+#sidebar select:hover {
+	background : #336edd;
 }
 
 ::selection {
-	background : #ddaa55;
+	background : #336edd;
 }
 
 ::-moz-selection {
-	background : #ddaa55;
+	background : #336edd;
 }
 
-#tools > .object {
+#sidebar > .object {
 }
 
 
@@ -207,7 +207,7 @@ canvas {
 
 	padding-top: 5px;
 	padding-bottom: 5px;
-	background: #ddaa55;
+	background: #336edd;
 }
 
 #menu {
@@ -215,10 +215,10 @@ canvas {
 	top:  0px;
 	left: 0px;
 
-	width: 250px;
-	height:50px;
+	width: 100%;
+	height:45px;
 
-	background: #f6f6f6;
+	background: #222;
 
 	padding-left: auto;
 	padding-right: auto;
@@ -226,18 +226,42 @@ canvas {
 	box-sizing: border-box;
 
 	z-index: 3;
+
+	display: flex;
+}
+
+#menu > div {
+	display: flex;
+	flex-basis: 100px;
+	flex-grow: 1;
+}
+
+#menu > #tools {
+	justify-content: center;
 }
 
 #menu button {
-	transition-duration : 0.5s;
-	background : #f6f6f6;
+	transition-duration : 0.3s;
+	background : #222;
+	color: #f5f5f5;
 	border : none;
-	padding : 16px;
+	padding : 14px;
 	margin: 0px;
 	cursor : pointer;
 }
 
+#menu button:not(.selected) {
+	transition-duration : 0.5s;
+	background : #222;
+	border: none;
+}
+
+#menu .selected {
+	transition-duration : 0.1s;
+	background : #336edd;
+}
+
 #menu button:hover {
 	transition-duration : 0.1s;
-	background : #ddaa55;
+	background : #336edd;
 }

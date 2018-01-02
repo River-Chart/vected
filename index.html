@@ -39,13 +39,21 @@
 		<canvas id="canvas_grid"></canvas>
 		<canvas id="canvas"></canvas>
 
-		<div id="tools">
+		<div id="sidebar">
 		</div>
 
 		<div id="menu">
-			<button onclick="core.project.new();core.draw();">New</button>
-			<button onclick="core.project.load();core.draw();">Open</button>
-			<button onclick="core.project.save();core.draw();">Save</button>
+			<div id="project">
+				<button onclick="core.project.new();core.draw();">New</button>
+				<button onclick="core.project.load();core.draw();">Open</button>
+				<button onclick="core.project.save();core.draw();">Save</button>
+			</div>
+
+			<div id="tools">
+			</div>
+
+			<div>
+			</div>
 		</div>
 
 		<div id="overlay"></div>

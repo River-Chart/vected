@@ -25,7 +25,7 @@ core.register_shortcut(new function() {
 		if(s) {
 			core.project.shapes.splice(core.selected_shape, 1);
 			core.draw();
-			core.update_tools();
+			core.update_ui();
 			return true;
 		}
 	};

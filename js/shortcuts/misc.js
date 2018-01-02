@@ -6,7 +6,7 @@ core.register_shortcut(new function() {
 
 	this.run = function() {
 		core.preview = !core.preview;
-		core.update_tools();
+		core.update_ui();
 		core.draw();
 		return true;
 	};
@@ -22,7 +22,7 @@ core.register_shortcut(new function() {
 		var s = core.get_selected_shape();
 		if(s) {
 			s.path.closed = !s.path.closed;
-			core.update_tools();
+			core.update_ui();
 			core.draw();
 		}
 	};
@@ -39,7 +39,7 @@ core.register_shortcut(new function() {
 		var s = core.get_selected_shape();
 		if(s) {
 			s.path.arc = !s.path.arc;
-			core.update_tools();
+			core.update_ui();
 			core.draw();
 		}
 	};
@@ -55,7 +55,7 @@ core.register_shortcut(new function() {
 		var s = core.get_selected_shape();
 		if(s) {
 			s.path.curve = !s.path.curve;
-			core.update_tools();
+			core.update_ui();
 			core.draw();
 		}
 	};

@@ -1,26 +1,3 @@
-var TAB_TOOLS = core.register_tab (function () {
-	this.name = "Tools";
-
-	this.draw = function (container) {
-		for(var i = 0; i < core.tools.length; i++) {
-			var tools_btn = document.createElement("button");
-
-			if (i == core.tool) {
-				tools_btn.setAttribute("class", "selected");
-				tools_btn.setAttribute("className", "selected");
-			}
-
-			tools_btn.tool_id = i;
-			tools_btn.onclick = function () {
-				core.select_tool(this.tool_id);
-			};
-
-			tools_btn.appendChild(document.createTextNode(core.tools[i].title));
-			container.appendChild(tools_btn);
-		}
-	};
-});
-
 var TAB_SETTINGS = core.register_tab (function () {
 	this.name = "Settings";
 
@@ -67,7 +44,7 @@ var TAB_OBJECT = core.register_tab (function () {
 		container.appendChild(
 			utils.createInput("Stroke", "color", "color_stroke", stroke, function () {
 				core.get_selected_shape().style.stroke = this.value;
-				core.update_tools();
+				core.update_ui();
 				core.draw();
 			})
 		);
@@ -76,7 +53,7 @@ var TAB_OBJECT = core.register_tab (function () {
 		container.appendChild(
 			utils.createInput("Fill", "color", "color_fill", fill, function () {
 				core.get_selected_shape().style.fill = this.value;
-				core.update_tools();
+				core.update_ui();
 				core.draw();
 			})
 		);
@@ -87,7 +64,7 @@ var TAB_OBJECT = core.register_tab (function () {
 		container.appendChild(
 			utils.createInput("Stroke", "checkbox", "draw_stroke", draw_stroke, function () {
 				core.get_selected_shape().style.draw_stroke = this.checked;
-				core.update_tools();
+				core.update_ui();
 				core.draw();
 			})
 		);
@@ -96,7 +73,7 @@ var TAB_OBJECT = core.register_tab (function () {
 		container.appendChild(
 			utils.createInput("Fill", "checkbox", "draw_fill", draw_fill, function () {
 				core.get_selected_shape().style.draw_fill = this.checked;
-				core.update_tools();
+				core.update_ui();
 				core.draw();
 			})
 		);
@@ -107,7 +84,7 @@ var TAB_OBJECT = core.register_tab (function () {
 		container.appendChild(
 			utils.createInput("Closed", "checkbox", "path_closed", closed, function () {
 				core.get_selected_shape().path.closed = this.checked;
-				core.update_tools();
+				core.update_ui();
 				core.draw();
 			})
 		);
@@ -118,7 +95,7 @@ var TAB_OBJECT = core.register_tab (function () {
 				["default", "arc", "curve", "bezier"],
 				function () {
 					core.get_selected_shape().path.draw_type = this.options[this.selectedIndex].text;
-					core.update_tools();
+					core.update_ui();
 					core.draw();
 				}
 			)
@@ -130,7 +107,7 @@ var TAB_OBJECT = core.register_tab (function () {
 		container.appendChild(
 			utils.createInput("Stroke width", "number", "stroke_width", stroke_width, function () {
 				core.get_selected_shape().style.stroke_width = parseInt(this.value);
-				core.update_tools();
+				core.update_ui();
 				core.draw();
 			})
 		);
@@ -141,7 +118,7 @@ var TAB_OBJECT = core.register_tab (function () {
 				["flat", "square", "round"],
 				function () {
 					core.get_selected_shape().style.stroke_cap = this.options[this.selectedIndex].text;
-					core.update_tools();
+					core.update_ui();
 					core.draw();
 				}
 			)

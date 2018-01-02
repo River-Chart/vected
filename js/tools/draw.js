@@ -16,7 +16,7 @@ var TOOL_DRAW = core.register_tool(new function() {
 			this.selected_point = s.path.points.length-1;
 
 			core.draw();
-			core.update_tools();
+			core.update_ui();
 		} else {
 			if(e.which == 1) {
 				var my_shape = new shape([]);
@@ -30,7 +30,7 @@ var TOOL_DRAW = core.register_tool(new function() {
 				this.selected_point = -2;
 
 				core.draw();
-				core.update_tools();
+				core.update_ui();
 			} else if(s) {
 				if(s.path.points.length > 0) {
 					s.path.points.pop();
@@ -41,7 +41,7 @@ var TOOL_DRAW = core.register_tool(new function() {
 				this.selected_point = s.path.points.length-1;
 
 				core.draw();
-				core.update_tools();
+				core.update_ui();
 			}
 		}
 	};
@@ -80,7 +80,7 @@ core.register_shortcut(new function() {
 
 	this.run = function() {
 		core.tool = TOOL_DRAW;
-		core.update_tools();
+		core.update_ui();
 		core.draw();
 		return true;
 	};

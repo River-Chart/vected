@@ -8,7 +8,7 @@ core.register_setting(new function() {
 
 	this.change = function(v) {
 		core.snap = v.checked;
-		core.update_tools();
+		core.update_ui();
 	};
 }());
 
@@ -22,7 +22,7 @@ core.register_setting(new function() {
 
 	this.change = function(v) {
 		core.grid = v.checked;
-		core.update_tools();
+		core.update_ui();
 		core.draw_grid();
 	};
 }());
@@ -41,7 +41,7 @@ core.register_setting(new function() {
 		if(core.grid_size < 1) {
 			core.grid_size = 1;
 		}
-		core.update_tools();
+		core.update_ui();
 		core.draw_grid();
 	};
 }());

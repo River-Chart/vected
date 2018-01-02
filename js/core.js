@@ -152,7 +152,7 @@ var core = new function() {
 		if(this.tools[i].select) {
 			this.tools[i].select();
 		}
-		this.update_tools();
+		this.update_ui();
 	};
 
 	this.draw = function() {
@@ -186,7 +186,7 @@ var core = new function() {
 			return;
 		}
 
-		if (this.grid_size > 4) {
+		if (this.grid_size*this.viewport.zoom >= 4) {
 			gui.ctx_grid.beginPath ();
 			var x = (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2))%(this.grid_size*this.viewport.zoom);
 			for (var i = x; i < w+x; i+=this.grid_size*this.viewport.zoom) {
@@ -203,23 +203,23 @@ var core = new function() {
 			gui.ctx_grid.lineWidth = 1;
 			gui.ctx_grid.strokeStyle = "#ccc";
 			gui.ctx_grid.stroke ();
-
-			gui.ctx_grid.beginPath ();
-
-			gui.ctx_grid.moveTo (0, this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2));
-			gui.ctx_grid.lineTo (w, this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2));
-
-			gui.ctx_grid.moveTo (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2), 0);
-			gui.ctx_grid.lineTo (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2), h);
-
-			gui.ctx_grid.lineWidth = 2;
-			gui.ctx_grid.strokeStyle = "#666";
-			gui.ctx_grid.stroke ();
 		}
+
+		gui.ctx_grid.beginPath ();
+
+		gui.ctx_grid.moveTo (0, this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2));
+		gui.ctx_grid.lineTo (w, this.viewport.y*this.viewport.zoom+Math.ceil(canvas.height/2));
+
+		gui.ctx_grid.moveTo (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2), 0);
+		gui.ctx_grid.lineTo (this.viewport.x*this.viewport.zoom+Math.ceil(canvas.width/2), h);
+
+		gui.ctx_grid.lineWidth = 2;
+		gui.ctx_grid.strokeStyle = "#666";
+		gui.ctx_grid.stroke ();
 	};
 
-	this.update_tools = function() {
-		gui.tools.innerHTML = "";
+	this.update_ui = function() {
+		gui.sidebar.innerHTML = "";
 
 		for (var i = 0; i < this.tabs.length; i++) {
 			var div = document.createElement("div");
@@ -232,10 +232,28 @@ var core = new function() {
 
 				this.tabs[i].draw (div);
 
-			gui.tools.appendChild(div);
+			gui.sidebar.appendChild(div);
 
-			gui.tools.appendChild(document.createElement("br"));
-			gui.tools.appendChild(document.createElement("br"));
+			gui.sidebar.appendChild(document.createElement("br"));
+			gui.sidebar.appendChild(document.createElement("br"));
+		}
+
+		gui.tools.innerHTML = "";
+		for(var i = 0; i < this.tools.length; i++) {
+			var tool_btn = document.createElement("button");
+
+			if (i == this.tool) {
+				tool_btn.setAttribute("class", "selected");
+				tool_btn.setAttribute("className", "selected");
+			}
+
+			tool_btn.tool_id = i;
+			tool_btn.onclick = function () {
+				core.select_tool(this.tool_id);
+			};
+
+			tool_btn.appendChild(document.createTextNode(core.tools[i].title));
+			gui.tools.appendChild(tool_btn);
 		}
 	};
 
@@ -248,7 +266,7 @@ var core = new function() {
 		} else if(core.tools[core.tool].mousedown) {
 			if (e.which == 3) {
 				core.tool = -1;
-				core.update_tools();
+				core.update_ui();
 			} else {
 				core.tools[core.tool].mousedown(e);
 			}
@@ -345,7 +363,7 @@ var core = new function() {
 					core.close_dialog();
 				} else {
 					core.tool = -1;
-					core.update_tools();
+					core.update_ui();
 				}
 			} else if(core.tool != -1 && core.tools[core.tool].keydown) {
 				if (core.tools[core.tool].keydown(e)) {
@@ -402,13 +420,14 @@ function load() {
 
 	gui.ctx_grid = canvas_grid.getContext("2d");
 	gui.tools = document.getElementById("tools");
+	gui.sidebar = document.getElementById("sidebar");
 
 	core.init_dialog ();
 
-	core.create_tab (TAB_TOOLS);
+	//core.create_tab (TAB_TOOLS);
 	core.create_tab (TAB_SETTINGS);
 	core.create_tab (TAB_OBJECT);
 
-	core.update_tools();
+	core.update_ui();
 	core.draw_grid();
 }

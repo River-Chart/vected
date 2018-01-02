@@ -9,6 +9,6 @@ core.register_setting(new function() {
 	this.change = function(v) {
 		core.preview = v.checked;
 		core.draw();
-		core.update_tools();
+		core.update_ui();
 	};
 }());

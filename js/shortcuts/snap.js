@@ -6,7 +6,7 @@ core.register_shortcut(new function() {
 
 	this.run = function() {
 		core.snap = !core.snap;
-		core.update_tools();
+		core.update_ui();
 		core.draw_grid();
 		return true;
 	};
@@ -20,7 +20,7 @@ core.register_shortcut(new function() {
 
 	this.run = function() {
 		core.grid = !core.grid;
-		core.update_tools();
+		core.update_ui();
 		core.draw_grid();
 		return true;
 	};
@@ -36,7 +36,7 @@ core.register_shortcut(new function() {
 		if((core.grid_size / 2) % 1 == 0) {
 			core.grid_size = core.grid_size / 2;
 		}
-		core.update_tools();
+		core.update_ui();
 		core.draw_grid();
 		return true;
 	};
@@ -50,7 +50,7 @@ core.register_shortcut(new function() {
 
 	this.run = function() {
 		core.grid_size = core.grid_size * 2;
-		core.update_tools();
+		core.update_ui();
 		core.draw_grid();
 		return true;
 	};

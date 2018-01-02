@@ -41,7 +41,7 @@ core.tool_edit = (new function() {
 					this.selected_point = -2;
 					this.mode = MODE_MOVE_SHAPE;
 					core.select_shape(i);
-					core.update_tools();
+					core.update_ui();
 					return;
 				}
 
@@ -53,7 +53,7 @@ core.tool_edit = (new function() {
 						this.selected_point = j;
 						this.mode = MODE_MOVE_POINT;
 						core.select_shape(i);
-						core.update_tools();
+						core.update_ui();
 						return;
 					}
 				}
@@ -63,7 +63,7 @@ core.tool_edit = (new function() {
 			this.selection.start = { x:core.mouseX_raw, y:core.mouseY_raw };
 		}
 
-		core.update_tools();
+		core.update_ui();
 	};
 
 	this.mousemove = function(e) {
@@ -97,6 +97,6 @@ core.tool_edit = (new function() {
 			this.selected_point = -1;
 		}
 
-		core.update_tools();
+		core.update_ui();
 	};
 }());

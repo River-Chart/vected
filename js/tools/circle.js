@@ -45,7 +45,7 @@ core.register_shortcut(new function() {
 
 	this.run = function() {
 		core.tool = TOOL_CIRCLE;
-		core.update_tools();
+		core.update_ui();
 		core.draw();
 		return true;
 	};

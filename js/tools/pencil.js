@@ -26,7 +26,7 @@ core.register_tool(new function() {
 			core.select_shape(core.project.shapes.length - 1);
 
 			core.draw();
-			core.update_tools();
+			core.update_ui();
 		}
 	};
 
@@ -55,7 +55,7 @@ core.register_tool(new function() {
 	this.mouseup = function(e) {
 		if(e.which == 1) {
 			core.draw();
-			core.update_tools();
+			core.update_ui();
 		}
 	};
 }());
