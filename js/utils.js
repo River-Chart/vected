@@ -39,6 +39,11 @@ var utils = new function() {
 
 	this.createInput = function (name, type, id, value, evt) {
 		var box = this.createBox (name);
+		box.appendChild(this.createInputElement(type, id, value, evt));
+		return box;
+	};
+
+	this.createInputElement = function (type, id, value, evt) {
 		var inp = document.createElement("input");
 		inp.type = type;
 		inp.id = id;
@@ -54,10 +59,9 @@ var utils = new function() {
 		if (evt) {
 			inp.onchange = evt;
 		}
-
-		box.appendChild(inp);
-		return box;
-	};
+		
+		return inp;
+	}
 
 	this.createSelect = function (name, id, value, options, evt) {
 		var box = this.createBox (name);

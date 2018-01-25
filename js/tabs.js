@@ -41,43 +41,38 @@ var TAB_OBJECT = core.register_tab (function () {
 		*/
 
 		// Stroke
-		container.appendChild(
-			utils.createInput("Stroke", "color", "color_stroke", stroke, function () {
-				core.get_selected_shape().style.stroke = this.value;
-				core.update_ui();
-				core.draw();
-			})
-		);
+		var elm_stroke = utils.createBox("Stroke");
+
+		elm_stroke.appendChild (utils.createInputElement("checkbox", "draw_stroke", draw_stroke, function () {
+			core.get_selected_shape().style.draw_stroke = this.checked;
+			core.update_ui();
+			core.draw();
+		}));
+
+		elm_stroke.appendChild (utils.createInputElement("color", "color_stroke", stroke, function () {
+			core.get_selected_shape().style.stroke = this.value;
+			core.update_ui();
+			core.draw();
+		}));
+
+		container.appendChild(elm_stroke);
 
 		// Fill
-		container.appendChild(
-			utils.createInput("Fill", "color", "color_fill", fill, function () {
-				core.get_selected_shape().style.fill = this.value;
-				core.update_ui();
-				core.draw();
-			})
-		);
+		var elm_fill = utils.createBox("Fill");
 
-		container.appendChild(document.createElement("br"));
+		elm_fill.appendChild (utils.createInputElement("checkbox", "draw_fill", draw_fill, function () {
+			core.get_selected_shape().style.draw_fill = this.checked;
+			core.update_ui();
+			core.draw();
+		}));
 
-		// Draw stroke
-		container.appendChild(
-			utils.createInput("Stroke", "checkbox", "draw_stroke", draw_stroke, function () {
-				core.get_selected_shape().style.draw_stroke = this.checked;
-				core.update_ui();
-				core.draw();
-			})
-		);
+		elm_fill.appendChild (utils.createInputElement("color", "color_fill", fill, function () {
+			core.get_selected_shape().style.fill = this.value;
+			core.update_ui();
+			core.draw();
+		}));
 
-		// Draw fill
-		container.appendChild(
-			utils.createInput("Fill", "checkbox", "draw_fill", draw_fill, function () {
-				core.get_selected_shape().style.draw_fill = this.checked;
-				core.update_ui();
-				core.draw();
-			})
-		);
-
+		container.appendChild(elm_fill);
 		container.appendChild(document.createElement("br"));
 
 		// Closed

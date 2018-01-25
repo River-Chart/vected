@@ -46,7 +46,7 @@ var TOOL_DRAW = core.register_tool(new function() {
 		}
 	};
 
-	this.mousemove = function() {
+	this.mousemove = function (evt) {
 		if(core.mouse_pressed[1]) {
 			if(this.selected_point != -1) {
 				var s = core.get_selected_shape();
