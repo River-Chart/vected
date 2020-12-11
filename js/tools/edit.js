@@ -9,6 +9,8 @@ core.tool_edit = (new function() {
 	this.mode = MODE_MOVE_POINT;
 
 	this.selected_point = -1;
+	this.offsetY = 0;
+	this.offsetX = 0;
 
 	this.selection = {
 		start : {x:0, y:0},
@@ -18,6 +20,7 @@ core.tool_edit = (new function() {
 	};
 
 	this.draw = function () {
+		// console.log('tool_edit draw')
 		if (this.mode == MODE_SELECT) {
 			ctx.lineWidth = 2/core.viewport.zoom;
 			ctx.strokeStyle = "#ddaa55";
@@ -30,14 +33,19 @@ core.tool_edit = (new function() {
 	};
 
 	this.mousedown = function(e) {
+		console.log('tool_edit mousedown')
+
 		if(e.which == 1) {
 			core.select_shape(-1);
 
 			for(var i = 0; i < core.project.shapes.length; i++) {
 				var my_shape = core.project.shapes[i];
 
-				if(utils.dist(core.mouseX_raw, core.mouseY_raw,
-						my_shape.position.x, my_shape.position.y) < 10/core.viewport.zoom) {
+
+				if(utils.inBox(my_shape, core.mouseX_raw, core.mouseY_raw)) {
+					this.offsetX = my_shape.position.x - core.mouseX_raw 
+					this.offsetY = my_shape.position.y - core.mouseY_raw 
+
 					this.selected_point = -2;
 					this.mode = MODE_MOVE_SHAPE;
 					core.select_shape(i);
@@ -45,11 +53,18 @@ core.tool_edit = (new function() {
 					return;
 				}
 
+				// if(utils.dist(core.mouseX_raw, core.mouseY_raw, my_shape.position.x, my_shape.position.y) < 10/core.viewport.zoom) {
+				// 	this.selected_point = -2;
+				// 	this.mode = MODE_MOVE_SHAPE;
+				// 	core.select_shape(i);
+				// 	core.update_ui();
+				// 	return;
+				// }
+
 				for(var j = 0; j < my_shape.path.points.length; j++) {
 					var p = my_shape.path.points[j];
 
-					if(utils.dist(core.mouseX_raw, core.mouseY_raw,
-							p.x + my_shape.position.x, p.y + my_shape.position.y) < 10/core.viewport.zoom) {
+					if(utils.dist(core.mouseX_raw, core.mouseY_raw, p.x + my_shape.position.x, p.y + my_shape.position.y) < 10/core.viewport.zoom) {
 						this.selected_point = j;
 						this.mode = MODE_MOVE_POINT;
 						core.select_shape(i);
@@ -68,13 +83,13 @@ core.tool_edit = (new function() {
 
 	this.mousemove = function(e) {
 		if (this.mode == MODE_SELECT) {
-			this.selection.end = { x:core.mouseX_raw, y:core.mouseY_raw };
+			this.selection.end = { x:core.mouseX_raw , y:core.mouseY_raw };
 		} else if(this.selected_point != -1) {
 			var s = core.get_selected_shape();
 			if(this.selected_point == -2) {
 				s.position = {
-					x : core.mouseX,
-					y : core.mouseY
+					x : core.mouseX + this.offsetX,
+					y : core.mouseY + this.offsetY
 				};
 			} else {
 				s.path.points[this.selected_point] = {
@@ -88,6 +103,7 @@ core.tool_edit = (new function() {
 	};
 
 	this.mouseup = function(e) {
+		console.log(	this.selection)
 		if(e.which == 1) {
 			if (this.mode == MODE_SELECT) {
 				// TODO

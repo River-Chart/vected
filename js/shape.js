@@ -38,7 +38,7 @@ function shape(points) {
 
 			ctx.translate(this.position.x, this.position.y);
 			ctx.beginPath();
-
+			// console.log(this.path)
 
 			if(this.path.draw_type == "curve") {
 				ctx.moveTo(this.path.points[0].x, this.path.points[0].y);

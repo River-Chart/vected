@@ -6,6 +6,16 @@ var utils = new function() {
 		return v;
 	};
 
+	this.inBox = function(shapes, x, y) {
+
+	    const maxX = Math.max(...shapes.path.points.map(({x}) => x)) + shapes.position.x
+		const minX = Math.min(...shapes.path.points.map(({x}) => x)) + shapes.position.x
+		const maxY = Math.max(...shapes.path.points.map(({y}) => y)) + shapes.position.y
+		const minY = Math.min(...shapes.path.points.map(({y}) => y)) + shapes.position.y
+		if( x < maxX && x > minX && y < maxY && y > minY  ) return true
+		return false;
+	};
+
 	this.is_inside = function(x, y, a, b, c, d) {
 		if(x > a && x < c &&
 		   y > b && y < d) {

@@ -260,7 +260,7 @@ var core = new function() {
 	//input
 	this.mousedown = function(e) {
 		core.mouse_pressed[e.which] = true;
-
+		console.log(e, core.mouse_pressed)
 		if (core.tool == -1) {
 			core.tool_edit.mousedown(e);
 		} else if(core.tools[core.tool].mousedown) {
@@ -322,16 +322,25 @@ var core = new function() {
 		this.pmouseY_raw = core.mouseY_raw;
 	};
 
-	this.wheel = function (evt) {
-		if (evt.deltaY < 0) {
-			core.viewport.zoom *= 1.2;
-		} else {
-			core.viewport.zoom *= 0.8;
+	this.wheel = function (evt, ...a) {
+		if(evt.ctrlKey){
+			evt.preventDefault()
+			if (evt.deltaY < 0) {
+				core.viewport.zoom += 0.1;
+			} else {
+				core.viewport.zoom -= 0.1;
+			}
+	
+			core.viewport.zoom = Math.max (core.viewport.zoom, 0.1);
+			core.draw ();
+			core.draw_grid ();
+		}else{
+			core.viewport.x -= evt.deltaX
+			core.viewport.y -= evt.deltaY
+			core.draw ();
+			core.draw_grid ();
 		}
-
-		core.viewport.zoom = Math.max (core.viewport.zoom, 0.1);
-		core.draw ();
-		core.draw_grid ();
+		
 	};
 
 	this.keydown = function(e) {
